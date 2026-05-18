@@ -676,7 +676,7 @@ const sims = {
       <div class="sc-field">
         <label>Nome do produto (opcional)</label>
         <div class="sc-input-wrap">
-          <input id="qtdProduto" type="text" placeholder="Ex: Carne bovina, Açúcar, Arroz..." style="padding-left:14px;height:50px;font-family:var(--fb);font-size:15px">
+          <input id="qtdProduto" type="text" placeholder="Ex: Carne , Pães, Farinha..." style="padding-left:14px;height:50px;font-family:var(--fb);font-size:15px">
         </div>
       </div>
 
