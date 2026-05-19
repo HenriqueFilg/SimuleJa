@@ -3,21 +3,53 @@ const fmtN = (v,d=2) => v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximu
 
 // ── CAROUSEL ──
 const track = document.getElementById('carouselTrack');
-const allCards = Array.from(track.querySelectorAll('.cat-card'));
-const STEP = 216, VISIBLE = 4;
-let idx = 0;
+// allCards now includes both carousel cards AND grid cards
+let allCards = Array.from(document.querySelectorAll('.cat-card[data-sim]'));
 
-function updateCarousel(animate=true){
-  track.style.transition = animate ? 'transform .35s cubic-bezier(.4,0,.2,1)' : 'none';
-  track.style.transform = `translateX(-${idx*STEP}px)`;
-  const max = allCards.length - VISIBLE;
-  const p=document.getElementById('prev'), n=document.getElementById('next');
-  p.style.opacity = idx<=0?'.35':'1'; p.style.pointerEvents = idx<=0?'none':'auto';
-  n.style.opacity = idx>=max?'.35':'1'; n.style.pointerEvents = idx>=max?'none':'auto';
+// Carousel has only 3 real cards + Ver mais = 4 visible, no scrolling needed
+// Hide arrows since 4 cards fit perfectly
+document.getElementById('prev').style.display = 'none';
+document.getElementById('next').style.display = 'none';
+
+// ── TOGGLE MORE CARDS ──
+let moreCardsOpen = false;
+function toggleMoreCards(){
+  const panel = document.getElementById('moreCardsPanel');
+  const btn   = document.getElementById('catVerMais');
+  moreCardsOpen = !moreCardsOpen;
+  panel.style.display = moreCardsOpen ? 'block' : 'none';
+  if(btn){
+    const lbl = btn.querySelector('.cat-label');
+    const ico = btn.querySelector('.cat-icon i');
+    if(lbl) lbl.textContent = moreCardsOpen ? 'Ver menos' : 'Ver mais';
+    if(ico){ ico.className = moreCardsOpen ? 'bi bi-x-lg' : 'bi bi-grid-3x3-gap-fill'; }
+    btn.classList.toggle('active', moreCardsOpen);
+  }
+  if(moreCardsOpen) panel.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
-document.getElementById('prev').addEventListener('click',()=>{if(idx>0){idx--;updateCarousel();}});
-document.getElementById('next').addEventListener('click',()=>{const m=allCards.length-VISIBLE;if(idx<m){idx++;updateCarousel();}});
-updateCarousel(false);
+
+// ── CARD CLICK: carousel + grid ──
+function handleCardClick(card){
+  const sim = card.dataset.sim;
+  if(!sim) return;
+  // close more cards panel if open
+  if(moreCardsOpen) toggleMoreCards();
+  // deactivate all
+  allCards.forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  openSim(sim);
+}
+
+// attach to carousel cards
+track.querySelectorAll('.cat-card[data-sim]').forEach(card => {
+  card.addEventListener('click', () => handleCardClick(card));
+});
+
+// attach to grid cards (event delegation)
+document.getElementById('allCardsGrid').addEventListener('click', e => {
+  const card = e.target.closest('.cat-card[data-sim]');
+  if(card) handleCardClick(card);
+});
 
 // ── STEPPER ──
 function stepDown(id,min=1){const e=document.getElementById(id);e.value=Math.max(min,+e.value-1);}
@@ -788,7 +820,7 @@ const sims = {
         </button>
       </div>
     </div>
- 
+
     <div class="sc-body">
       <!-- OBJETIVO -->
       <div style="display:flex;gap:8px">
@@ -801,7 +833,7 @@ const sims = {
           <i class="bi bi-fire"></i> Perder gordura
         </button>
       </div>
- 
+
       <!-- DADOS PESSOAIS -->
       <div class="sc-row">
         <div class="sc-field"><label>Peso (kg)</label>
@@ -811,7 +843,7 @@ const sims = {
           <div class="sc-input-wrap"><input id="fitAltura" type="number" step="0.1" placeholder="175" oninput="previewFit()" style="padding-left:14px"><span class="sc-suffix">cm</span></div>
         </div>
       </div>
- 
+
       <div class="sc-row">
         <div class="sc-field"><label>Idade</label>
           <div class="sc-input-wrap"><input id="fitIdade" type="number" placeholder="25" oninput="previewFit()" style="padding-left:14px"><span class="sc-suffix">anos</span></div>
@@ -823,7 +855,7 @@ const sims = {
           </select></div>
         </div>
       </div>
- 
+
       <div class="sc-field"><label>Nível de atividade física</label>
         <div class="sc-select-wrap"><select id="fitAtiv" onchange="previewFit()" style="height:50px;font-size:13.5px">
           <option value="1.2">Sedentário (sem exercício)</option>
@@ -833,7 +865,7 @@ const sims = {
           <option value="1.9">Extremamente ativo (atleta, 2x/dia)</option>
         </select></div>
       </div>
- 
+
       <!-- IMC PREVIEW -->
       <div id="fitImcPreview" style="display:none;background:rgba(0,177,79,0.07);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px">
         <div style="text-align:center;min-width:70px">
@@ -850,10 +882,10 @@ const sims = {
           </div>
         </div>
       </div>
- 
+
       <div id="simResult" class="sc-result"></div>
     </div>
- 
+
     <div class="sc-footer" style="margin-top:10px">
       <div class="sc-brand">
         <div class="sc-brand-icon"><i class="bi bi-coin"></i></div>
@@ -966,17 +998,6 @@ function openSim(key){
   panel.classList.add('open');
   setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
 }
-
-allCards.forEach(card=>{
-  card.addEventListener('click',()=>{
-    const sim=card.dataset.sim;
-    allCards.forEach(c=>c.classList.remove('active'));
-    card.classList.add('active');
-    if(sim && sims[sim]) openSim(sim);
-  });
-});
-
-openSim('p2p'); allCards[0].classList.add('active');
 
 // ── CALC FUNCTIONS ──
 // ── P2P RATE PILLS ──
@@ -1462,41 +1483,166 @@ function calcIR(){
 let liveRates = null;
 let moedaDebounce = null;
 
-// Taxas fallback (caso API falhe)
+// Fallback rates caso todas as APIs falhem
 const fallbackRates = {
-  BRL: 1, USD: 0.182, EUR: 0.167, GBP: 0.143,
-  ARS: 180.5, JPY: 27.4, CAD: 0.248, CHF: 0.162
+  BRL:1, USD:0.182, EUR:0.167, GBP:0.143,
+  ARS:180.5, JPY:27.4, CAD:0.248, CHF:0.162,
+  AUD:0.278, CNY:1.32, MXN:3.12, CLP:171.5
 };
 
-async function initMoeda(){
+// ── Cache inteligente: atualiza às 09:00 e 17:00 (horário de Brasília) ──
+const MOEDA_CACHE_KEY = 'simuleJa_moeda_cache';
+
+function getMoedaCacheSlot(){
+  // Retorna uma string que identifica o slot atual (ex: "2026-05-19-09" ou "2026-05-19-17")
+  const now = new Date();
+  // Brasília = UTC-3
+  const br = new Date(now.getTime() - 3*60*60*1000);
+  const d  = br.toISOString().slice(0,10); // YYYY-MM-DD
+  const h  = br.getUTCHours();
+  // slot muda às 09:00 e 17:00
+  const slot = h < 9 ? 'pre09' : h < 17 ? 'pos09' : 'pos17';
+  return `${d}-${slot}`;
+}
+
+function saveMoedaCache(rates, source){
   try {
-    // open.er-api.com — gratuita, sem chave, CORS liberado, base USD
-    const res  = await fetch('https://open.er-api.com/v6/latest/USD');
-    const data = await res.json();
-    if(data.result === 'success'){
-      // converter tudo para base BRL
-      const usdRates = data.rates; // { BRL: 5.49, EUR: 0.92, ... }
+    const payload = {
+      rates,
+      source,
+      slot: getMoedaCacheSlot(),
+      savedAt: new Date().toISOString()
+    };
+    sessionStorage.setItem(MOEDA_CACHE_KEY, JSON.stringify(payload));
+  } catch(e){}
+}
+
+function loadMoedaCache(){
+  try {
+    const raw = sessionStorage.getItem(MOEDA_CACHE_KEY);
+    if(!raw) return null;
+    const payload = JSON.parse(raw);
+    // só usa se for do mesmo slot (mesmo horário de referência)
+    if(payload.slot === getMoedaCacheSlot()) return payload;
+  } catch(e){}
+  return null;
+}
+
+function getNextUpdateTime(){
+  const now = new Date();
+  const br  = new Date(now.getTime() - 3*60*60*1000);
+  const h   = br.getUTCHours();
+  let nextH = h < 9 ? 9 : h < 17 ? 17 : 33; // 33 = 09:00 do dia seguinte
+  const nextBr = new Date(br);
+  nextBr.setUTCHours(nextH % 24, 0, 0, 0);
+  if(nextH >= 24) nextBr.setUTCDate(nextBr.getUTCDate() + 1);
+  // converte de volta para hora local
+  const diff = nextBr.getTime() + 3*60*60*1000 - now.getTime();
+  const horas = Math.floor(diff/3600000);
+  const mins  = Math.floor((diff%3600000)/60000);
+  return `${horas}h${mins.toString().padStart(2,'0')}m`;
+}
+
+const API_SOURCES = [
+  {
+    name: 'ExchangeRate-API',
+    url:  'https://open.er-api.com/v6/latest/USD',
+    parse: async (res) => {
+      const data = await res.json();
+      if(data.result !== 'success') throw new Error('bad result');
+      const usdRates  = data.rates;
       const brlPerUsd = usdRates['BRL'] || 5.5;
-      liveRates = {};
-      Object.keys(usdRates).forEach(cur => {
-        liveRates[cur] = usdRates[cur] / brlPerUsd; // valor em BRL
-      });
-      liveRates['BRL'] = 1;
-      const d = new Date(data.time_last_update_utc);
-      const ts = d.toLocaleDateString('pt-BR');
-      const updated = document.getElementById('moedaUpdated');
-      if(updated) updated.textContent = `✦ Ao vivo · Atualizado em ${ts}`;
-    } else {
-      throw new Error('API retornou erro');
+      const rates = {};
+      Object.keys(usdRates).forEach(cur => { rates[cur] = usdRates[cur] / brlPerUsd; });
+      rates['BRL'] = 1;
+      return rates;
     }
-  } catch(e) {
-    liveRates = { ...fallbackRates };
-    const updated = document.getElementById('moedaUpdated');
-    if(updated) updated.textContent = '✦ Cotações estimadas (sem conexão)';
+  },
+  {
+    name: 'Frankfurter (BCE)',
+    url:  'https://api.frankfurter.app/latest?from=BRL',
+    parse: async (res) => {
+      const data = await res.json();
+      if(!data.rates) throw new Error('no rates');
+      const rates = { BRL: 1 };
+      Object.keys(data.rates).forEach(cur => { rates[cur] = data.rates[cur]; });
+      return rates;
+    }
+  },
+  {
+    name: 'Fixer (free)',
+    url:  'https://data.fixer.io/api/latest?access_key=free&base=EUR',
+    parse: async (res) => {
+      const data = await res.json();
+      if(!data.rates) throw new Error('no rates');
+      const eurToBrl = data.rates['BRL'] || 6.0;
+      const rates = { BRL: 1 };
+      Object.keys(data.rates).forEach(cur => {
+        rates[cur] = data.rates[cur] / eurToBrl;
+      });
+      return rates;
+    }
   }
+];
+
+async function initMoeda(){
+  const ticker  = document.getElementById('moedaTicker');
+  const updated = document.getElementById('moedaUpdated');
+
+  // 1. Verifica cache do slot atual
+  const cached = loadMoedaCache();
+  if(cached){
+    liveRates = cached.rates;
+    const savedAt = new Date(cached.savedAt).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    if(ticker)  updateTicker();
+    if(updated) updated.textContent = `✦ ${cached.source} · ${savedAt} · próx. em ${getNextUpdateTime()}`;
+    autoConvert();
+    return;
+  }
+
+  // 2. Tenta cada fonte em sequência
+  if(ticker) ticker.textContent = 'Buscando...';
+  for(const src of API_SOURCES){
+    try {
+      const res   = await fetch(src.url, { signal: AbortSignal.timeout(6000) });
+      const rates = await src.parse(res);
+      if(!rates || !rates['USD']) throw new Error('invalid rates');
+      liveRates = rates;
+      saveMoedaCache(rates, src.name);
+      const now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      if(updated) updated.textContent = `✦ ${src.name} · ${now} · próx. em ${getNextUpdateTime()}`;
+      updateTicker();
+      autoConvert();
+      return;
+    } catch(e){ continue; }
+  }
+
+  // 3. Fallback definitivo
+  liveRates = { ...fallbackRates };
+  saveMoedaCache(liveRates, 'Estimativas offline');
+  if(updated) updated.textContent = '✦ Sem conexão — cotações estimadas';
   updateTicker();
   autoConvert();
 }
+
+// Agenda próxima atualização automática quando a aba está aberta
+function scheduleMoedaUpdate(){
+  const now  = new Date();
+  const br   = new Date(now.getTime() - 3*60*60*1000);
+  const h    = br.getUTCHours(), m = br.getUTCMinutes(), s = br.getUTCSeconds();
+  // próximo evento: 09:00 ou 17:00
+  let nextH = h < 9 ? 9 : h < 17 ? 17 : 33;
+  const msAte = ((nextH%24 - h)*3600 - m*60 - s) * 1000;
+  if(msAte > 0){
+    setTimeout(async ()=>{
+      // limpa cache e rebusca
+      try{ sessionStorage.removeItem(MOEDA_CACHE_KEY); }catch(e){}
+      if(document.getElementById('mDe')) await initMoeda();
+      scheduleMoedaUpdate();
+    }, msAte);
+  }
+}
+scheduleMoedaUpdate();
 
 function updateTicker(){
   const de   = document.getElementById('mDe')?.value   || 'BRL';
@@ -1538,7 +1684,7 @@ function autoConvert(){
         <div class="sc-result-row"><span>Taxa</span><span>1 ${de} = ${fmtN(taxa,4)} ${para}</span></div>
         <div class="sc-result-row"><span>Inverso</span><span>1 ${para} = ${fmtN(1/taxa,4)} ${de}</span></div>
       </div>
-      <div class="sc-disclaimer">Cotação via ExchangeRate-API. Use taxas do banco para transferências reais.</div>`;
+      <div class="sc-disclaimer">Cotações atualizadas às 09h e 17h (Brasília). Use taxas do banco para transferências reais.</div>`;
   }, 250);
 }
 
@@ -1632,8 +1778,8 @@ function calcConsorcio(){
   const fmtCode  = dt => `${padZ(dt.getDate())}${padZ(dt.getMonth()+1)}${dt.getFullYear()}`;
   const fmtBr    = dt => dt.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
   const meuCodigo  = `${meuNum}-${fmtCode(minhaDt)}`;
-  const totalPago  = parcela * meuNum;                    // parcelas até ser Contemplado
-  const totalApos  = parcela * (total - meuNum);          // parcelas restantes após o comtemplado
+  const totalPago  = parcela * meuNum;                    // parcelas até ser sorteado
+  const totalApos  = parcela * (total - meuNum);          // parcelas restantes após o sorteio
   const totalGeral = totalPago + totalApos;               // tudo que vai pagar no consórcio
   const lucro      = premio - totalGeral;                 // ganho/custo real considerando tudo
 
@@ -1648,8 +1794,8 @@ function calcConsorcio(){
 
   const extraHTML = `
     <div class="sc-result-rows" style="margin-bottom:14px">
-      <div class="sc-result-row"><span>Total pago até ser contemplado</span><span>${fmt(totalPago)}</span></div>
-      <div class="sc-result-row"><span>Total pago após ser contemplado</span><span>${fmt(totalApos)}</span></div>
+      <div class="sc-result-row"><span>Total pago até o sorteio</span><span>${fmt(totalPago)}</span></div>
+      <div class="sc-result-row"><span>Total pago após o sorteio</span><span>${fmt(totalApos)}</span></div>
       <div class="sc-result-row" style="border-top:1px solid rgba(255,255,255,.15);padding-top:10px;margin-top:4px">
         <span style="font-weight:700;color:#fff">Total geral pago</span>
         <span style="font-weight:800;color:#fff">${fmt(totalGeral)}</span>

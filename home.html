@@ -28,32 +28,73 @@
 <section class="categories-section">
   <div class="categories-header">
   <h2 class="categories-title">Principais Calculadoras</h2>
-  </div>
+
+  <p class="categories-subtitle">
+    ✦ Todas nossas calculadoras tem Inteligência artificial de ponta, e são validadas por profissionais qualificados!
+  </p>
+</div>
   <div class="carousel-wrapper">
     <button class="carousel-btn" id="prev"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
     <div class="carousel-viewport">
       <div class="carousel-track" id="carouselTrack">
-        <div class="cat-card active" data-sim="p2p"><div class="cat-icon"><i class="bi bi-people-fill"></i></div><span class="cat-label">Empréstimo P2P</span></div>
         <div class="cat-card" data-sim="veiculo"><div class="cat-icon"><i class="bi bi-car-front-fill"></i></div><span class="cat-label">Financiamento Veicular</span></div>
         <div class="cat-card" data-sim="imovel"><div class="cat-icon"><i class="bi bi-house-fill"></i></div><span class="cat-label">Financiamento Imobiliário</span></div>
-        <div class="cat-card" data-sim="investimento"><div class="cat-icon"><i class="bi bi-graph-up-arrow"></i></div><span class="cat-label">Investimentos</span></div>
-        <div class="cat-card" data-sim="ipva"><div class="cat-icon"><i class="bi bi-file-earmark-text-fill"></i></div><span class="cat-label">Simulador de IPVA</span></div>
-        <div class="cat-card" data-sim="fgts"><div class="cat-icon"><i class="bi bi-briefcase-fill"></i></div><span class="cat-label">Cálculo FGTS</span></div>
         <div class="cat-card" data-sim="rescisao"><div class="cat-icon"><i class="bi bi-clipboard2-check-fill"></i></div><span class="cat-label">Cálculo de Rescisão</span></div>
-        <div class="cat-card" data-sim="ir"><div class="cat-icon"><img src="css/icons/leao-receita.svg" alt="" class="bi bi-receipt-cutoff" width="25px"></div><span class="cat-label">Simulador Imposto de Renda</span></div>
-        <div class="cat-card" data-sim="moeda"><div class="cat-icon"><i class="bi bi-currency-exchange"></i></div><span class="cat-label">Conversor de Moeda</span></div>
-        <div class="cat-card" data-sim="seguro"><div class="cat-icon"><i class="bi bi-shield-fill-check"></i></div><span class="cat-label">Simulador Seguro Desemprego</span></div>
-        <div class="cat-card" data-sim="consorcio"><div class="cat-icon"><i class="bi bi-dice-5-fill"></i></div><span class="cat-label">Consórcio</span></div>
-        <div class="cat-card" data-sim="loteria"><div class="cat-icon"><i class="bi bi-ticket-perforated-fill"></i></div><span class="cat-label">Sorteios Loteria</span></div>
-        <div class="cat-card" data-sim="area"><div class="cat-icon"><i class="bi bi-map-fill"></i></div><span class="cat-label">Cálculo de Área</span></div>
-        <div class="cat-card" data-sim="quantidade"><div class="cat-icon"><i class="bi bi-bag-fill"></i></div><span class="cat-label">Calculadora de Compra</span></div>
-        <div class="cat-card" data-sim="fitness"><div class="cat-icon"><i class="bi bi-heart-pulse-fill"></i></div><span class="cat-label">Fitness</span></div>
-        <div class="cat-card cat-more"><div class="cat-icon"><i class="bi bi-plus-lg"></i></div><span class="cat-label">Ver mais</span></div>
+        <div class="cat-card cat-more" id="catVerMais" onclick="toggleMoreCards()"><div class="cat-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div><span class="cat-label">Ver mais</span></div>
       </div>
     </div>
     <button class="carousel-btn" id="next"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
   </div>
 </section>
+
+<!-- EXPANDED CARDS GRID -->
+<div id="moreCardsPanel" style="display:none;background:var(--gray-100);border-top:1px solid var(--gray-200);padding:24px 24px 20px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <span style="font-family:var(--ff);font-weight:700;font-size:15px;color:var(--gray-700)">Todas as calculadoras</span>
+      <button onclick="toggleMoreCards()" style="background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:26px;line-height:1;padding:0 4px">&times;</button>
+    </div>
+    <div id="allCardsGrid">
+
+      <!-- FINANCEIROS -->
+      <div class="more-cards-section">
+        <div class="more-cards-section-title"><i class="bi bi-bank2"></i> Financeiros</div>
+        <div class="more-cards-grid">
+          <div class="cat-card" data-sim="veiculo"><div class="cat-icon"><i class="bi bi-car-front-fill"></i></div><span class="cat-label">Financiamento Veicular</span></div>
+          <div class="cat-card" data-sim="imovel"><div class="cat-icon"><i class="bi bi-house-fill"></i></div><span class="cat-label">Financiamento Imobiliário</span></div>
+          <div class="cat-card" data-sim="p2p"><div class="cat-icon"><i class="bi bi-people-fill"></i></div><span class="cat-label">Empréstimo P2P</span></div>
+          <div class="cat-card" data-sim="investimento"><div class="cat-icon"><i class="bi bi-graph-up-arrow"></i></div><span class="cat-label">Investimentos</span></div>
+          <div class="cat-card" data-sim="consorcio"><div class="cat-icon"><i class="bi bi-dice-5-fill"></i></div><span class="cat-label">Consórcio</span></div>
+          <div class="cat-card" data-sim="moeda"><div class="cat-icon"><i class="bi bi-currency-exchange"></i></div><span class="cat-label">Conversor de Moeda</span></div>
+        </div>
+      </div>
+
+      <!-- TRABALHISTAS -->
+      <div class="more-cards-section">
+        <div class="more-cards-section-title"><i class="bi bi-briefcase-fill"></i> Trabalhistas</div>
+        <div class="more-cards-grid">
+          <div class="cat-card" data-sim="rescisao"><div class="cat-icon"><i class="bi bi-clipboard2-check-fill"></i></div><span class="cat-label">Cálculo de Rescisão</span></div>
+          <div class="cat-card" data-sim="fgts"><div class="cat-icon"><i class="bi bi-briefcase-fill"></i></div><span class="cat-label">Cálculo FGTS</span></div>
+          <div class="cat-card" data-sim="seguro"><div class="cat-icon"><i class="bi bi-shield-fill-check"></i></div><span class="cat-label">Seguro Desemprego</span></div>
+          <div class="cat-card" data-sim="ir"><div class="cat-icon"><img src="css/icons/leao-receita.svg" alt="" class="bi bi-receipt-cutoff" width="25px"></div><span class="cat-label">Imposto de Renda</span></div>
+          <div class="cat-card" data-sim="ipva"><div class="cat-icon"><i class="bi bi-file-earmark-text-fill"></i></div><span class="cat-label">Simulador de IPVA</span></div>
+        </div>
+      </div>
+
+      <!-- OUTROS -->
+      <div class="more-cards-section">
+        <div class="more-cards-section-title"><i class="bi bi-grid-fill"></i> Outros</div>
+        <div class="more-cards-grid">
+          <div class="cat-card" data-sim="loteria"><div class="cat-icon"><i class="bi bi-ticket-perforated-fill"></i></div><span class="cat-label">Sorteios Loteria</span></div>
+          <div class="cat-card" data-sim="area"><div class="cat-icon"><i class="bi bi-map-fill"></i></div><span class="cat-label">Cálculo de Área</span></div>
+          <div class="cat-card" data-sim="quantidade"><div class="cat-icon"><i class="bi bi-bag-fill"></i></div><span class="cat-label">Calculadora de Compra</span></div>
+          <div class="cat-card" data-sim="fitness"><div class="cat-icon"><i class="bi bi-heart-pulse-fill"></i></div><span class="cat-label">Fitness</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- SIMULATOR PANEL -->
 <div id="simPanel" class="sim-panel">

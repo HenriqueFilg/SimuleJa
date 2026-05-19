@@ -8,7 +8,7 @@
   --teal: #1a3a4a;
   --navy: #1e2d3d;
   --white: #fff;
-  --gray-100: #eef1f4;
+  --gray-100: #f1f5f9;
   --gray-200: #e2e8f0;
   --gray-400: #94a3b8;
   --gray-600: #475569;
@@ -31,17 +31,15 @@ header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom
 .search-bar input::placeholder { color: var(--gray-400); }
 
 /* AD SPACE */
-
 .ad-space { height: 260px; background: #fff; border-bottom: 1px solid var(--gray-200); }
 
-/* CAROUSEL */
 /* CAROUSEL */
 .categories-section {
   background: #eef1f4;
   padding: 40px 0;
 }
 
-/* TEXTO */
+/* TÍTULO */
 .categories-header {
   text-align: center;
   margin-bottom: 28px;
@@ -50,9 +48,9 @@ header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom
 
 .categories-title {
   font-family: var(--ff);
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 800;
-  color: #111827;
+  color: var(--gray-900);
   margin-bottom: 10px;
 }
 
@@ -71,21 +69,27 @@ header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom
   padding: 0 24px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: center;
+}
+
+/* REMOVE SETAS */
+.carousel-btn {
+  display: none;
 }
 
 /* VIEWPORT */
 .carousel-viewport {
-  overflow: hidden;
-  flex: 1;
+  overflow: visible;
+  flex: none;
 }
 
 /* TRACK */
 .carousel-track {
   display: flex;
   gap: 18px;
-  flex-wrap: nowrap;
-  will-change: transform;
+  flex-wrap: wrap;
+  justify-content: center;
+  transform: none !important;
 }
 
 /* CARD */
@@ -115,6 +119,12 @@ header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom
   transform: translateY(-3px);
 }
 
+/* CARD ATIVO */
+.cat-card.active {
+  border-color: var(--green);
+  background: #edf9f1;
+}
+
 /* ÍCONE */
 .cat-icon {
   width: 42px;
@@ -127,7 +137,11 @@ header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom
   font-size: 18px;
 }
 
-/* TEXTO CARD */
+.cat-card.active .cat-icon {
+  background: rgba(0,177,79,.18);
+}
+
+/* TEXTO */
 .cat-label {
   font-family: var(--ff);
   font-weight: 700;
@@ -137,38 +151,25 @@ header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom
   line-height: 1.4;
 }
 
-/* BOTÕES */
-.carousel-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  background: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: var(--gray-600);
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
-  transition: .2s;
+/* VER MAIS */
+.cat-card.cat-more .cat-icon {
+  background: var(--gray-200);
 }
 
-.carousel-btn:hover {
-  background: var(--green);
-  color: #fff;
+#allCardsGrid .cat-card { flex: none; width: 100%; }
+.more-cards-section { margin-bottom: 20px; }
+.more-cards-section:last-child { margin-bottom: 0; }
+.more-cards-section-title {
+  font-family: var(--ff); font-weight: 700; font-size: 13px;
+  color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 7px;
 }
-.carousel-btn { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--gray-200); background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s, border-color .2s, color .2s; color: var(--gray-600); }
-.carousel-btn:hover { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
-.carousel-viewport { overflow: hidden; flex: 1; }
-.carousel-track { display: flex; gap: 16px; flex-wrap: nowrap; will-change: transform; }
-.cat-card { flex: 0 0 200px; width: 200px; background: #fff; border-radius: 16px; padding: 22px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; border: 2px solid transparent; transition: border-color .2s, box-shadow .2s, transform .2s; }
-.cat-card:hover { border-color: var(--green); box-shadow: 0 4px 20px rgba(0,177,79,.12); transform: translateY(-2px); }
-.cat-card.active { border-color: var(--green); background: var(--green-light); }
-.cat-icon { width: 52px; height: 52px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 22px; }
-.cat-card.active .cat-icon { background: rgba(0,177,79,.18); }
-.cat-label { font-family: var(--ff); font-weight: 700; font-size: 13px; color: var(--teal); text-align: center; line-height: 1.3; }
-.cat-card.cat-more .cat-icon { background: var(--gray-200); }
+.more-cards-section-title i { color: var(--green); font-size: 14px; }
+.more-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
 
 /* SIMULATOR PANEL */
 .sim-panel { background: var(--gray-100); overflow: visible; max-height: 0; transition: max-height .5s cubic-bezier(.4,0,.2,1), opacity .35s; opacity: 0; }
@@ -239,7 +240,7 @@ header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom
 .sc-brand-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 15px; }
 .sc-brand-text { font-family: var(--ff); font-weight: 700; font-size: 14px; color: var(--gray-900); }
 .sc-brand-sub { font-size: 12px; color: var(--gray-400); }
-.sc-calc-btn { padding: 13px 36px; background: #eef1f4; color: var(--gray-900); border: 1.5px solid var(--gray-200); border-radius: 10px; font-family: var(--ff); font-weight: 700; font-size: 15px; cursor: pointer; transition: background .2s, border-color .2s, color .2s, transform .15s; white-space: nowrap; }
+.sc-calc-btn { padding: 13px 36px; background: #f1f5f9; color: var(--gray-900); border: 1.5px solid var(--gray-200); border-radius: 10px; font-family: var(--ff); font-weight: 700; font-size: 15px; cursor: pointer; transition: background .2s, border-color .2s, color .2s, transform .15s; white-space: nowrap; }
 .sc-calc-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); transform: translateY(-1px); }
 
 /* RESULT STRIP */
