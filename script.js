@@ -676,7 +676,7 @@ const sims = {
       <div class="sc-field">
         <label>Nome do produto (opcional)</label>
         <div class="sc-input-wrap">
-          <input id="qtdProduto" type="text" placeholder="Ex: Carne , Pães, Farinha..." style="padding-left:14px;height:50px;font-family:var(--fb);font-size:15px">
+          <input id="qtdProduto" type="text" placeholder="Ex: Carne bovina, Açúcar, Arroz..." style="padding-left:14px;height:50px;font-family:var(--fb);font-size:15px">
         </div>
       </div>
 
@@ -772,6 +772,96 @@ const sims = {
 
     updateQtdPills();
     window._qtdLista = [];
+  },
+
+  fitness(){
+    simCard.innerHTML = `
+    <div class="sc-header">
+      <div class="sc-title-row">
+        <div class="sc-icon-box"><i class="bi bi-heart-pulse-fill"></i></div>
+        <div><div class="sc-title">Calculadora Fitness</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="sc-tag">IMC · Macros · Kcal</span>
+        <button class="sc-close" onclick="closePanel()">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+ 
+    <div class="sc-body">
+      <!-- OBJETIVO -->
+      <div style="display:flex;gap:8px">
+        <button id="fitModoA" onclick="switchFitModo('massa')"
+          style="flex:1;padding:11px 0;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s">
+          <i class="bi bi-bar-chart-fill"></i> Ganhar massa
+        </button>
+        <button id="fitModoB" onclick="switchFitModo('gordura')"
+          style="flex:1;padding:11px 0;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:var(--ff);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s">
+          <i class="bi bi-fire"></i> Perder gordura
+        </button>
+      </div>
+ 
+      <!-- DADOS PESSOAIS -->
+      <div class="sc-row">
+        <div class="sc-field"><label>Peso (kg)</label>
+          <div class="sc-input-wrap"><input id="fitPeso" type="number" step="0.1" placeholder="80" oninput="previewFit()" style="padding-left:14px"><span class="sc-suffix">kg</span></div>
+        </div>
+        <div class="sc-field"><label>Altura (cm)</label>
+          <div class="sc-input-wrap"><input id="fitAltura" type="number" step="0.1" placeholder="175" oninput="previewFit()" style="padding-left:14px"><span class="sc-suffix">cm</span></div>
+        </div>
+      </div>
+ 
+      <div class="sc-row">
+        <div class="sc-field"><label>Idade</label>
+          <div class="sc-input-wrap"><input id="fitIdade" type="number" placeholder="25" oninput="previewFit()" style="padding-left:14px"><span class="sc-suffix">anos</span></div>
+        </div>
+        <div class="sc-field"><label>Sexo</label>
+          <div class="sc-select-wrap"><select id="fitSexo" onchange="previewFit()" style="height:50px;font-size:14px">
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+          </select></div>
+        </div>
+      </div>
+ 
+      <div class="sc-field"><label>Nível de atividade física</label>
+        <div class="sc-select-wrap"><select id="fitAtiv" onchange="previewFit()" style="height:50px;font-size:13.5px">
+          <option value="1.2">Sedentário (sem exercício)</option>
+          <option value="1.375">Levemente ativo (1–3x/semana)</option>
+          <option value="1.55" selected>Moderadamente ativo (3–5x/semana)</option>
+          <option value="1.725">Muito ativo (6–7x/semana)</option>
+          <option value="1.9">Extremamente ativo (atleta, 2x/dia)</option>
+        </select></div>
+      </div>
+ 
+      <!-- IMC PREVIEW -->
+      <div id="fitImcPreview" style="display:none;background:rgba(0,177,79,0.07);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px">
+        <div style="text-align:center;min-width:70px">
+          <div id="fitImcVal" style="font-family:var(--ff);font-weight:800;font-size:26px;color:var(--green-dark)">--</div>
+          <div style="font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px">IMC</div>
+        </div>
+        <div style="flex:1">
+          <div id="fitImcLabel" style="font-family:var(--ff);font-weight:700;font-size:14px;color:var(--gray-900)">--</div>
+          <div id="fitImcBar" style="height:8px;border-radius:4px;background:linear-gradient(to right,#3b82f6 0%,#22c55e 35%,#f59e0b 60%,#ef4444 100%);margin-top:6px;position:relative">
+            <div id="fitImcPin" style="position:absolute;top:-3px;width:14px;height:14px;background:#1e2d3d;border:2px solid #fff;border-radius:50%;transform:translateX(-50%);transition:left .3s;left:50%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray-400);margin-top:3px">
+            <span>16</span><span>18,5</span><span>25</span><span>30</span><span>40</span>
+          </div>
+        </div>
+      </div>
+ 
+      <div id="simResult" class="sc-result"></div>
+    </div>
+ 
+    <div class="sc-footer" style="margin-top:10px">
+      <div class="sc-brand">
+        <div class="sc-brand-icon"><i class="bi bi-coin"></i></div>
+        <div><div class="sc-brand-text">SimuleJá</div><div class="sc-brand-sub">Fitness</div></div>
+      </div>
+      <span class="sc-hint">✦ Baseado em fórmulas científicas validadas</span>
+      <button class="sc-calc-btn" onclick="calcFitness()">Calcular</button>
+    </div>`;
   },
 
   area(){
@@ -1541,9 +1631,11 @@ function calcConsorcio(){
   const padZ     = n => String(n).padStart(2,'0');
   const fmtCode  = dt => `${padZ(dt.getDate())}${padZ(dt.getMonth()+1)}${dt.getFullYear()}`;
   const fmtBr    = dt => dt.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
-  const meuCodigo = `${meuNum}-${fmtCode(minhaDt)}`;
-  const totalPago = parcela * meuNum;
-  const lucro     = premio - totalPago;
+  const meuCodigo  = `${meuNum}-${fmtCode(minhaDt)}`;
+  const totalPago  = parcela * meuNum;                    // parcelas até ser sorteado
+  const totalApos  = parcela * (total - meuNum);          // parcelas restantes após o sorteio
+  const totalGeral = totalPago + totalApos;               // tudo que vai pagar no consórcio
+  const lucro      = premio - totalGeral;                 // ganho/custo real considerando tudo
 
   const timelineRows = draws.map((dt,i)=>{
     const num=i+1, mine=num===meuNum, code=`${num}-${fmtCode(dt)}`;
@@ -1555,12 +1647,23 @@ function calcConsorcio(){
   }).join('');
 
   const extraHTML = `
+    <div class="sc-result-rows" style="margin-bottom:14px">
+      <div class="sc-result-row"><span>Total pago até o sorteio</span><span>${fmt(totalPago)}</span></div>
+      <div class="sc-result-row"><span>Total pago após o sorteio</span><span>${fmt(totalApos)}</span></div>
+      <div class="sc-result-row" style="border-top:1px solid rgba(255,255,255,.15);padding-top:10px;margin-top:4px">
+        <span style="font-weight:700;color:#fff">Total geral pago</span>
+        <span style="font-weight:800;color:#fff">${fmt(totalGeral)}</span>
+      </div>
+      <div class="sc-result-row">
+        <span>${lucro>=0?'Ganho líquido real':'Custo líquido real'}</span>
+        <span style="color:${lucro>=0?'var(--green-mid)':'#f87171'};font-weight:700">${fmt(Math.abs(lucro))}</span>
+      </div>
+    </div>
     <div style="font-size:10.5px;color:rgba(255,255,255,.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:.8px;font-weight:700">
       Calendário completo — ${total} sorteios
     </div>
     <div class="cons-timeline">${timelineRows}</div>`;
 
-  // custom result for consorcio (has code block + rows + extra)
   const el = document.getElementById('simResult');
   el.className = 'sc-result visible';
   el.innerHTML = `
@@ -1573,7 +1676,6 @@ function calcConsorcio(){
       <div class="sc-result-row"><span>Serei sorteado em</span><span style="color:var(--green-mid)">${fmtBr(minhaDt)}</span></div>
       <div class="sc-result-row"><span>Total pago até o sorteio</span><span>${fmt(totalPago)}</span></div>
       <div class="sc-result-row"><span>Prêmio a receber</span><span>${fmt(premio)}</span></div>
-      <div class="sc-result-row"><span>${lucro>=0?'Ganho líquido':'Custo líquido'}</span><span style="color:${lucro>=0?'var(--green-mid)':'#f87171'}">${fmt(Math.abs(lucro))}</span></div>
       <div class="sc-result-row"><span>Participantes</span><span>${total} pessoas</span></div>
     </div>
     <div class="sc-disclaimer">Sorteio em ordem sequencial. Seu número é fixo na posição ${meuNum}.</div>
@@ -2040,6 +2142,216 @@ function renderLista(){
 
 function atualizarTotalLista(){
   renderLista();
+}
+
+// ── FITNESS ──
+let _fitModo = 'massa';
+
+function switchFitModo(modo){
+  _fitModo = modo;
+  const bA = document.getElementById('fitModoA');
+  const bB = document.getElementById('fitModoB');
+  if(!bA||!bB) return;
+  if(modo==='massa'){
+    bA.style.background='var(--green)'; bA.style.borderColor='var(--green)'; bA.style.color='#fff';
+    bB.style.background='#fff'; bB.style.borderColor='var(--gray-200)'; bB.style.color='var(--gray-600)';
+  } else {
+    bB.style.background='var(--green)'; bB.style.borderColor='var(--green)'; bB.style.color='#fff';
+    bA.style.background='#fff'; bA.style.borderColor='var(--gray-200)'; bA.style.color='var(--gray-600)';
+  }
+  previewFit();
+}
+
+function previewFit(){
+  const peso   = parseFloat(document.getElementById('fitPeso')?.value || 0);
+  const altura = parseFloat(document.getElementById('fitAltura')?.value || 0) / 100;
+  const prev   = document.getElementById('fitImcPreview');
+  if(!prev) return;
+  if(!peso || !altura){ prev.style.display='none'; return; }
+
+  const imc = peso / (altura * altura);
+  const imcVal = document.getElementById('fitImcVal');
+  const imcLabel = document.getElementById('fitImcLabel');
+  const imcPin   = document.getElementById('fitImcPin');
+  if(imcVal) imcVal.textContent = fmtN(imc, 1);
+
+  let label='', color='', pct=50;
+  const range = [16,40];
+  const span  = range[1]-range[0];
+  pct = Math.max(0, Math.min(100, (imc-range[0])/span*100));
+
+  if(imc < 18.5)      { label='Abaixo do peso'; color='#3b82f6'; }
+  else if(imc < 25)   { label='Peso normal ✓';  color='#22c55e'; }
+  else if(imc < 30)   { label='Sobrepeso';       color='#f59e0b'; }
+  else if(imc < 35)   { label='Obesidade Grau I';color='#ef4444'; }
+  else if(imc < 40)   { label='Obesidade Grau II';color='#dc2626'; }
+  else                { label='Obesidade Grau III';color='#991b1b'; }
+
+  if(imcLabel){ imcLabel.textContent=label; imcLabel.style.color=color; }
+  if(imcPin)   imcPin.style.left = pct+'%';
+  prev.style.display = 'flex';
+}
+
+function calcFitness(){
+  const peso   = parseFloat(document.getElementById('fitPeso')?.value || 0);
+  const altCm  = parseFloat(document.getElementById('fitAltura')?.value || 0);
+  const idade  = parseFloat(document.getElementById('fitIdade')?.value || 0);
+  const sexo   = document.getElementById('fitSexo')?.value || 'M';
+  const ativFat= parseFloat(document.getElementById('fitAtiv')?.value || 1.55);
+  const modo   = _fitModo;
+
+  if(!peso||!altCm||!idade){ alert('Preencha peso, altura e idade.'); return; }
+
+  const altM = altCm / 100;
+
+  // ── IMC
+  const imc = peso / (altM * altM);
+  let imcLabel='';
+  if(imc<18.5) imcLabel='Abaixo do peso';
+  else if(imc<25) imcLabel='Peso normal';
+  else if(imc<30) imcLabel='Sobrepeso';
+  else if(imc<35) imcLabel='Obesidade Grau I';
+  else if(imc<40) imcLabel='Obesidade Grau II';
+  else imcLabel='Obesidade Grau III';
+
+  // ── TMB (Mifflin-St Jeor)
+  const tmb = sexo==='M'
+    ? 10*peso + 6.25*altCm - 5*idade + 5
+    : 10*peso + 6.25*altCm - 5*idade - 161;
+
+  // ── TDEE
+  const tdee = tmb * ativFat;
+
+  // ── KCAL ALVO
+  let kcalAlvo, kcalLabel, surplus;
+  if(modo === 'massa'){
+    surplus   = tdee + 300;  // superávit moderado
+    kcalAlvo  = surplus;
+    kcalLabel = 'Superávit calórico (+300 kcal)';
+  } else {
+    surplus   = tdee - 500;  // déficit de 500
+    kcalAlvo  = surplus;
+    kcalLabel = 'Déficit calórico (−500 kcal)';
+  }
+
+  // ── PROTEÍNA
+  const protMin = modo==='massa' ? 1.6 : 2.0;
+  const protMax = modo==='massa' ? 2.2 : 2.4;
+  const protMed = (protMin+protMax)/2;
+  const protG   = Math.round(peso * protMed);
+
+  // ── CARBOIDRATO
+  const carbMin = modo==='massa' ? 5  : 2;
+  const carbMax = modo==='massa' ? 7  : 3;
+  const carbMed = (carbMin+carbMax)/2;
+  const carbG   = Math.round(peso * carbMed);
+
+  // ── GORDURA
+  const gordG = Math.round(peso * 1.0);
+
+  // ── ÁGUA
+  const aguaMin = Math.round(peso * 35);
+  const aguaMax = Math.round(peso * 50);
+
+  // ── KCAL POR MACRO (verificação)
+  const kcalProt = protG * 4;
+  const kcalCarb = carbG * 4;
+  const kcalGord = gordG * 9;
+  const kcalTotal = kcalProt + kcalCarb + kcalGord;
+
+  // ── DICAS por objetivo
+  const dicasMassa = [
+    'Distribua a proteína em 4–5 refeições ao longo do dia para maximizar a síntese muscular.',
+    'Consuma carboidratos complexos (arroz, batata-doce, aveia) especialmente antes e após o treino.',
+    'Priorize o sono: 7–9 horas é quando o GH (hormônio do crescimento) age mais.',
+    'Treino de força 3–5x por semana com progressão de carga é essencial para hipertrofia.',
+    'Creatina monoidratada (3–5g/dia) é o suplemento mais estudado para ganho de massa.',
+    'Evite déficit calórico — sem calorias suficientes, o ganho muscular é muito limitado.',
+  ];
+  const dicasGordura = [
+    'O déficit calórico é o único caminho comprovado para perda de gordura — sem ele, não há resultado.',
+    'Alta proteína preserva músculo durante o déficit e aumenta a saciedade.',
+    'Priorize alimentos de alto volume e baixa caloria: vegetais, proteínas magras, ovos.',
+    'Treino de força durante o corte evita perda de massa muscular junto com a gordura.',
+    'Cardio moderado (caminhada, bicicleta) complementa o déficit sem destruir músculo.',
+    'Evite ultrapassar 1kg de perda por semana — perdas muito rápidas costumam incluir músculo.',
+  ];
+  const dicas = modo==='massa' ? dicasMassa : dicasGordura;
+
+  const el = document.getElementById('simResult');
+  if(!el) return;
+  el.className = 'sc-result visible';
+
+  const objLabel = modo==='massa' ? '💪 Ganhar Massa' : '🔥 Perder Gordura';
+
+  const extraHTML = `
+    <div class="fit-section">
+      <div class="fit-section-title">Detalhamento calórico</div>
+      <div class="sc-result-rows">
+        <div class="sc-result-row"><span>TMB (metabolismo basal)</span><span>${Math.round(tmb)} kcal</span></div>
+        <div class="sc-result-row"><span>TDEE (gasto total diário)</span><span>${Math.round(tdee)} kcal</span></div>
+        <div class="sc-result-row"><span>${kcalLabel}</span><span style="color:var(--green-mid);font-weight:700">${Math.round(kcalAlvo)} kcal</span></div>
+        <div class="sc-result-row"><span>Kcal via proteína (${protG}g × 4)</span><span>${kcalProt} kcal</span></div>
+        <div class="sc-result-row"><span>Kcal via carboidrato (${carbG}g × 4)</span><span>${kcalCarb} kcal</span></div>
+        <div class="sc-result-row"><span>Kcal via gordura (${gordG}g × 9)</span><span>${kcalGord} kcal</span></div>
+      </div>
+    </div>
+    <div class="fit-section">
+      <div class="fit-section-title">Hidratação diária recomendada</div>
+      <div class="fit-agua-grid">
+        <div class="fit-agua-card"><div class="fit-agua-val">${(aguaMin/1000).toFixed(1)} L</div><div class="fit-agua-label">Mínimo (35ml/kg)</div></div>
+        <div class="fit-agua-card"><div class="fit-agua-val">${(aguaMax/1000).toFixed(1)} L</div><div class="fit-agua-label">Ideal (50ml/kg)</div></div>
+      </div>
+      <div style="font-size:11.5px;color:rgba(255,255,255,.5);margin-top:8px;line-height:1.5">Aumente o consumo em dias de treino, calor intenso ou uso de creatina.</div>
+    </div>
+    <div class="fit-section">
+      <div class="fit-section-title">Dicas para ${modo==='massa'?'ganho de massa':'perda de gordura'}</div>
+      <div class="fit-tip-list">
+        ${dicas.map(d=>`<div class="fit-tip"><span class="fit-tip-icon"><i class="bi bi-check-circle-fill"></i></span>${d}</div>`).join('')}
+      </div>
+    </div>
+    <div class="sc-disclaimer" style="margin-top:12px">Valores calculados com fórmula Mifflin-St Jeor. Consulte um nutricionista para um plano personalizado.</div>`;
+
+  el.innerHTML = `
+    <div class="sc-result-label">Objetivo: ${objLabel}</div>
+    <div class="sc-result-main">${Math.round(kcalAlvo)} kcal/dia</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:-8px;margin-bottom:14px">IMC: ${fmtN(imc,1)} — ${imcLabel}</div>
+
+    <div class="fit-macro-grid">
+      <div class="fit-macro-card">
+        <div class="fit-macro-icon"><i class="bi bi-egg-fill" style="color:#f59e0b"></i></div>
+        <div class="fit-macro-val">${protG}g</div>
+        <div class="fit-macro-unit">proteína/dia</div>
+        <div class="fit-macro-label">${fmtN(protMin,1)}–${fmtN(protMax,1)} g/kg</div>
+      </div>
+      <div class="fit-macro-card">
+        <div class="fit-macro-icon"><i class="bi bi-grid-fill" style="color:#a78bfa"></i></div>
+        <div class="fit-macro-val">${carbG}g</div>
+        <div class="fit-macro-unit">carboidrato/dia</div>
+        <div class="fit-macro-label">${carbMin}–${carbMax} g/kg</div>
+      </div>
+      <div class="fit-macro-card">
+        <div class="fit-macro-icon"><i class="bi bi-droplet-fill" style="color:#fb923c"></i></div>
+        <div class="fit-macro-val">${gordG}g</div>
+        <div class="fit-macro-unit">gordura/dia</div>
+        <div class="fit-macro-label">~1 g/kg</div>
+      </div>
+      <div class="fit-macro-card">
+        <div class="fit-macro-icon"><i class="bi bi-cup-fill" style="color:#60a5fa"></i></div>
+        <div class="fit-macro-val">${(aguaMin/1000).toFixed(1)}–${(aguaMax/1000).toFixed(1)}L</div>
+        <div class="fit-macro-unit">água/dia</div>
+        <div class="fit-macro-label">35–50 ml/kg</div>
+      </div>
+    </div>
+
+    <div class="sc-result-rows" style="margin-top:14px">
+      <div class="sc-result-row"><span>TMB (parado)</span><span>${Math.round(tmb)} kcal</span></div>
+      <div class="sc-result-row"><span>TDEE (com atividade)</span><span>${Math.round(tdee)} kcal</span></div>
+      <div class="sc-result-row"><span>${kcalLabel}</span><span style="color:var(--green-mid)">${Math.round(kcalAlvo)} kcal</span></div>
+    </div>
+
+    <div id="resExtra" style="display:none;margin-top:12px">${extraHTML}</div>
+    <button onclick="toggleResExtra(this)" class="res-vermais-btn">▼ Ver mais</button>`;
 }
 
 // ── ÁREA RURAL ──
