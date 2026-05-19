@@ -1632,8 +1632,8 @@ function calcConsorcio(){
   const fmtCode  = dt => `${padZ(dt.getDate())}${padZ(dt.getMonth()+1)}${dt.getFullYear()}`;
   const fmtBr    = dt => dt.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
   const meuCodigo  = `${meuNum}-${fmtCode(minhaDt)}`;
-  const totalPago  = parcela * meuNum;                    // parcelas até ser sorteado
-  const totalApos  = parcela * (total - meuNum);          // parcelas restantes após o sorteio
+  const totalPago  = parcela * meuNum;                    // parcelas até ser Contemplado
+  const totalApos  = parcela * (total - meuNum);          // parcelas restantes após o comtemplado
   const totalGeral = totalPago + totalApos;               // tudo que vai pagar no consórcio
   const lucro      = premio - totalGeral;                 // ganho/custo real considerando tudo
 
@@ -1648,8 +1648,8 @@ function calcConsorcio(){
 
   const extraHTML = `
     <div class="sc-result-rows" style="margin-bottom:14px">
-      <div class="sc-result-row"><span>Total pago até o sorteio</span><span>${fmt(totalPago)}</span></div>
-      <div class="sc-result-row"><span>Total pago após o sorteio</span><span>${fmt(totalApos)}</span></div>
+      <div class="sc-result-row"><span>Total pago até ser contemplado</span><span>${fmt(totalPago)}</span></div>
+      <div class="sc-result-row"><span>Total pago após ser contemplado</span><span>${fmt(totalApos)}</span></div>
       <div class="sc-result-row" style="border-top:1px solid rgba(255,255,255,.15);padding-top:10px;margin-top:4px">
         <span style="font-weight:700;color:#fff">Total geral pago</span>
         <span style="font-weight:800;color:#fff">${fmt(totalGeral)}</span>
