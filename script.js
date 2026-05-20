@@ -992,9 +992,33 @@ const sims = {
   }
 };
 
+const SIM_DESC = {
+  veiculo:    'Simule o financiamento do seu próximo veículo com a Tabela Price. Informe o valor do carro, a entrada e o prazo — e veja exatamente quanto vai pagar por mês, o custo total e os juros embutidos.',
+  imovel:     'Calcule a parcela do financiamento imobiliário com base na Tabela Price. Informe o valor do imóvel, entrada, taxa de juros anual e prazo em meses para descobrir a parcela mensal e a renda mínima necessária.',
+  rescisao:   'Calcule os valores que você tem direito a receber em caso de demissão ou rescisão de estágio. Selecione o tipo de vínculo (CLT ou estagiário), as datas e o motivo — e veja o detalhamento completo das verbas.',
+  p2p:        'Simule um empréstimo P2P (pessoa a pessoa) com o modelo bullet: você paga apenas os juros mensalmente e quita o principal no último mês. Informe o valor, taxa de juros e prazo para ver o custo total.',
+  investimento:'Compare o rendimento líquido de 7 aplicações financeiras ao mesmo tempo — Poupança, CDB, LCI/LCA, Fundo DI, Tesouro Prefixado, IPCA+ e Selic — usando as taxas do Banco Central em tempo real.',
+  ipva:       'Calcule o valor do IPVA anual do seu veículo com base no valor FIPE e na alíquota do seu estado. Veja o desconto por pagamento à vista e o valor de cada parcela.',
+  fgts:       'Estime o saldo acumulado na sua conta do FGTS com base no salário bruto, meses trabalhados e saldo atual. O cálculo inclui os depósitos mensais de 8% e o rendimento estimado.',
+  ir:         'Simule o Imposto de Renda mensal com base na tabela progressiva de 2025. Informe renda, dependentes e pensão alimentícia para calcular o IR, o INSS descontado e o salário líquido.',
+  moeda:      'Converta valores entre as principais moedas do mundo com cotações atualizadas duas vezes ao dia (09h e 17h, horário de Brasília) direto das APIs do Banco Central Europeu e ExchangeRate.',
+  seguro:     'Descubra quantas parcelas e qual o valor do Seguro Desemprego você tem direito, de acordo com o seu salário, meses trabalhados e número de solicitações anteriores. Baseado nas regras de 2025.',
+  consorcio:  'Simule seu consórcio e descubra a data exata em que será sorteado, o total pago antes e depois do sorteio, e gere seu código de identificação único no formato número+data.',
+  loteria:    'Gere palpites inteligentes para Mega-Sena, Quina, Lotofácil e mais 6 loterias da Caixa. Os números são escolhidos com base nos mais frequentes dos últimos 20 concursos combinados com aleatoriedade.',
+  area:       'Calcule a área de um terreno rural em m², hectares e alqueires (paulista, mineiro ou baiano). Informe as dimensões ou uma área já conhecida e veja a estimativa do valor de mercado por estado e tipo de uso.',
+  quantidade: 'Calcule o valor de qualquer produto vendido por peso, volume ou unidade. Informe o preço por kg, litro ou unidade, a quantidade que quer levar — ou quanto tem disponível — e veja o total exato.',
+  fitness:    'Calcule seu IMC, TMB, gasto calórico diário e a necessidade de proteína, carboidrato, gordura e água, tudo personalizado para o seu objetivo: ganhar massa muscular ou perder gordura corporal.',
+};
+
 function openSim(key){
   if(!sims[key]) return;
   sims[key]();
+  const desc    = document.getElementById('simDesc');
+  if(desc){
+    const txt = SIM_DESC[key] || '';
+    desc.textContent = txt;
+    desc.style.display = txt ? 'block' : 'none';
+  }
   panel.classList.add('open');
   setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
 }
