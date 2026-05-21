@@ -467,15 +467,134 @@ footer { background: #0d2233; color: #fff; padding: 48px 24px 32px; }
 
 @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
   .cards-grid{grid-template-columns:repeat(2,1fr)}
   .purpose-inner{grid-template-columns:1fr}
   .footer-cols{grid-template-columns:1fr 1fr}
   .sc-row{grid-template-columns:1fr}
+  .inv-taxas-grid{grid-template-columns:repeat(2,1fr)}
+  .inv-params-grid{grid-template-columns:1fr}
+  .fit-macro-grid{grid-template-columns:repeat(2,1fr)}
+  .area-conv-grid{grid-template-columns:1fr 1fr}
+  .inv-result-table th:nth-child(3),
+  .inv-result-table td:nth-child(3){ display:none }
 }
+
 @media(max-width:600px){
-  .cards-grid{grid-template-columns:1fr}
-  .purpose-heading{font-size:30px}
+  /* header */
+  .logo-text{font-size:14px}
+  .search-bar{width:140px}
+  .search-bar input{font-size:12px}
+
+  /* ad space */
+  .ad-space{height:120px}
+
+  /* carousel cards */
+  .carousel-wrapper{padding:0 12px}
+  .carousel-track{gap:8px}
+  .cat-card{border-radius:14px;padding:18px 10px;gap:8px}
+  .cat-icon{width:48px;height:48px}
+  .cat-icon i{font-size:20px}
+  .cat-label{font-size:11px}
+
+  /* sim panel */
+  .sim-panel-inner{padding:16px 12px 24px}
+  .sim-card{padding:20px 16px 16px;border-radius:16px}
+  .sc-header{margin-bottom:18px;flex-wrap:wrap;gap:10px}
+  .sc-title{font-size:15px}
+  .sc-icon-box{width:40px;height:40px;border-radius:10px}
+  .sc-icon-box i{font-size:18px}
+  .sc-tag{font-size:10px}
+
+  /* fields */
+  .sc-body{gap:14px}
+  .sc-row{grid-template-columns:1fr !important;gap:12px}
+  .sc-field label{font-size:12px}
+  .sc-prefix{padding:0 8px;font-size:12px;height:44px}
+  .sc-input-wrap input{height:44px;font-size:14px;padding:0 8px}
+  .sc-suffix{padding:0 8px;font-size:12px;height:44px}
+  .sc-plain{height:44px;font-size:14px}
+  .sc-select-wrap select{height:44px;font-size:13px}
+  .sc-stepper{height:44px}
+  .sc-step-btn{width:44px;height:44px;font-size:20px}
+  .sc-step-val{font-size:15px}
+  .sc-clear{padding:0 6px;font-size:15px}
+
+  /* rate pills */
+  .rate-pills{gap:4px}
+  .rate-pill{font-size:10px;padding:3px 0}
+
+  /* footer of card */
+  .sc-footer{flex-wrap:wrap;gap:8px}
+  .sc-calc-btn{width:100%;padding:12px 0;text-align:center}
+  .sc-brand-text{font-size:12px}
+  .sc-brand-sub{font-size:10px}
+  .sc-hint{font-size:11px;width:100%}
+
+  /* result */
+  .sc-result{padding:16px 14px;border-radius:12px;margin-top:12px}
+  .sc-result-main{font-size:26px}
+  .sc-result-row span:first-child{font-size:11px}
+  .sc-result-row span:last-child{font-size:12px}
+
+  /* investment table — stack on mobile */
+  .inv-result-table th:nth-child(3),
+  .inv-result-table td:nth-child(3),
+  .inv-result-table th:nth-child(4),
+  .inv-result-table td:nth-child(4){ display:none }
+  .inv-taxas-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .inv-taxa-val{font-size:16px}
+  .inv-params-grid{grid-template-columns:1fr}
+
+  /* fitness macro grid */
+  .fit-macro-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .fit-macro-val{font-size:16px}
+  .fit-agua-grid{grid-template-columns:1fr}
+
+  /* area */
+  .area-conv-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .area-conv-val{font-size:15px}
+
+  /* more cards panel */
+  .more-cards-grid{grid-template-columns:repeat(2,1fr)}
+
+  /* consorcio code */
+  .cons-code{flex-direction:column;gap:10px;text-align:center}
+  .cons-code-val{font-size:22px}
+
+  /* lot balls */
+  .lot-ball{width:34px;height:34px;font-size:11px}
+
+  /* tabs */
+  #tabCLT,#tabEst,#fitModoA,#fitModoB,#qtdModoA,#qtdModoB{font-size:12px;padding:9px 0}
+
+  /* section titles */
+  .section-title{font-size:22px}
+  .stat-number{font-size:20px}
+  .stats-inner{gap:16px}
+
+  /* purpose */
+  .purpose-heading{font-size:26px}
+  .purpose-body{font-size:13px}
+
+  /* footer */
   .footer-cols{grid-template-columns:1fr}
-  .search-bar{width:160px}
+  .footer-top{flex-direction:column;align-items:flex-start}
+  .footer-brand{flex-wrap:wrap}
+
+  /* article cards */
+  .cards-grid{grid-template-columns:1fr}
+  .article-card{padding:16px}
+
+  /* header ad */
+  .header-inner{gap:8px}
+}
+
+@media(max-width:380px){
+  .cat-card{padding:14px 6px}
+  .cat-icon{width:40px;height:40px}
+  .cat-icon i{font-size:17px}
+  .cat-label{font-size:10px}
+  .sc-title{font-size:13px}
 }

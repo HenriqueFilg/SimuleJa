@@ -896,6 +896,95 @@ const sims = {
     </div>`;
   },
 
+  amortizacao(){
+    simCard.innerHTML = `
+    <div class="sc-header">
+      <div class="sc-title-row">
+        <div class="sc-icon-box"><i class="bi bi-scissors"></i></div>
+        <div><div class="sc-title">Simulador de Amortização</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="sc-tag">Tabela Price</span>
+        <button class="sc-close" onclick="closePanel()">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sc-body">
+      <div style="background:rgba(0,177,79,0.07);border-radius:12px;padding:16px 18px">
+        <div style="font-family:var(--ff);font-weight:700;font-size:12px;color:var(--green);letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px">Dados do financiamento</div>
+        <div class="sc-row">
+          <div class="sc-field"><label>Valor financiado (R$)</label>
+            <div class="sc-input-wrap"><span class="sc-prefix">R$</span><input id="amorValor" type="number" step="0.01" value="50000" placeholder="0,00"></div>
+          </div>
+          <div class="sc-field"><label>Taxa de juros mensal (%)</label>
+            <div class="sc-input-wrap">
+              <input id="amorTaxa" type="number" step="0.001" value="2.1" style="padding-left:14px;height:50px">
+              <span class="sc-suffix">% a.m.</span>
+            </div>
+          </div>
+        </div>
+        <div class="sc-row" style="margin-top:4px">
+          <div class="sc-field"><label>Total de parcelas</label>
+            <div class="sc-stepper">
+              <button class="sc-step-btn" onclick="stepDown('amorN',6)">−</button>
+              <input class="sc-step-val" id="amorN" type="number" value="60" min="6">
+              <button class="sc-step-btn" onclick="stepUp('amorN',360)">+</button>
+            </div>
+            <div style="display:flex;gap:5px;margin-top:5px" id="pillsAmorN">
+              <button class="rate-pill" onclick="document.getElementById('amorN').value=24">24x</button>
+              <button class="rate-pill" onclick="document.getElementById('amorN').value=36">36x</button>
+              <button class="rate-pill" onclick="document.getElementById('amorN').value=48">48x</button>
+              <button class="rate-pill active" onclick="document.getElementById('amorN').value=60">60x</button>
+            </div>
+          </div>
+          <div class="sc-field"><label>Parcelas já pagas</label>
+            <div class="sc-stepper">
+              <button class="sc-step-btn" onclick="stepDown('amorAtual',0)">−</button>
+              <input class="sc-step-val" id="amorAtual" type="number" value="9" min="0">
+              <button class="sc-step-btn" onclick="stepUp('amorAtual',359)">+</button>
+            </div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:5px">Quantas parcelas você já pagou</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:rgba(0,177,79,0.07);border-radius:12px;padding:16px 18px">
+        <div style="font-family:var(--ff);font-weight:700;font-size:12px;color:var(--green);letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px">Amortização</div>
+        <div class="sc-row">
+          <div class="sc-field"><label>Valor de cada parcela (R$)</label>
+            <div class="sc-input-wrap"><span class="sc-prefix">R$</span><input id="amorParcVal" type="number" step="0.01" value="2357.50" placeholder="0,00"></div>
+          </div>
+          <div class="sc-field"><label>Quantas parcelas amortizar</label>
+            <div class="sc-stepper">
+              <button class="sc-step-btn" onclick="stepDown('amorQtd',1)">−</button>
+              <input class="sc-step-val" id="amorQtd" type="number" value="5" min="1">
+              <button class="sc-step-btn" onclick="stepUp('amorQtd',200)">+</button>
+            </div>
+            <div style="display:flex;gap:5px;margin-top:5px">
+              <button class="rate-pill" onclick="document.getElementById('amorQtd').value=3">3x</button>
+              <button class="rate-pill active" onclick="document.getElementById('amorQtd').value=5">5x</button>
+              <button class="rate-pill" onclick="document.getElementById('amorQtd').value=10">10x</button>
+              <button class="rate-pill" onclick="document.getElementById('amorQtd').value=12">12x</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="simResult" class="sc-result"></div>
+    </div>
+
+    <div class="sc-footer" style="margin-top:10px">
+      <div class="sc-brand">
+        <div class="sc-brand-icon"><i class="bi bi-coin"></i></div>
+        <div><div class="sc-brand-text">SimuleJá</div><div class="sc-brand-sub">Amortização</div></div>
+      </div>
+      <span class="sc-hint">✦ Amortize as últimas parcelas e destrua os juros</span>
+      <button class="sc-calc-btn" onclick="calcAmortizacao()">Calcular</button>
+    </div>`;
+  },
+
   area(){
     simCard.innerHTML = `
     <div class="sc-header">
@@ -992,6 +1081,101 @@ const sims = {
   }
 };
 
+// ── AMORTIZAÇÃO ──
+function setAmorN(v){
+  document.getElementById('amorN').value = v;
+  document.querySelectorAll('#amorN').forEach(()=>{});
+  document.querySelectorAll('.rate-pill').forEach(p=>{
+    if(['24x','36x','48x','60x'].includes(p.textContent))
+      p.classList.toggle('active', p.textContent === v+'x');
+  });
+}
+
+function setAmorQtd(v){ document.getElementById('amorQtd').value = v; }
+
+function calcAmortizacao(){
+  const PV      = parseFloat(document.getElementById('amorValor')?.value)   || 0;
+  const iTaxa   = parseFloat(document.getElementById('amorTaxa')?.value)    || 0;
+  const N       = parseInt(document.getElementById('amorN')?.value)         || 60;
+  const paga    = parseInt(document.getElementById('amorAtual')?.value)      || 0;
+  const parcVal = parseFloat(document.getElementById('amorParcVal')?.value)  || 0;
+  const qtd     = parseInt(document.getElementById('amorQtd')?.value)        || 1;
+  const i       = iTaxa / 100;
+
+  if(!PV || !i || !N || !parcVal){
+    alert('Preencha: valor financiado, taxa, total de parcelas e valor da parcela.');
+    return;
+  }
+  if(paga >= N){ alert('As parcelas já pagas não podem ser iguais ou maiores que o total.'); return; }
+
+  const parcRestantes = N - paga;
+  if(qtd > parcRestantes){ alert(`Você tem apenas ${parcRestantes} parcelas restantes.`); return; }
+
+  // Parcela Price calculada
+  const pmtCalc = PV * (i * Math.pow(1+i,N)) / (Math.pow(1+i,N) - 1);
+
+  // Saldo devedor atual
+  const saldoAtual = PV * Math.pow(1+i,paga) - pmtCalc * (Math.pow(1+i,paga) - 1) / i;
+
+  // Gerar todas as parcelas restantes (da mais próxima à mais distante)
+  const todas = [];
+  for(let k = 1; k <= parcRestantes; k++){
+    const numContrato = paga + k;
+    const mesesAFazer = k;
+    const vp = parcVal / Math.pow(1+i, mesesAFazer);
+    todas.push({ numContrato, mesesAFazer, vf: parcVal, vp });
+  }
+
+  // Amortizar as ÚLTIMAS (mais distantes = mais baratas)
+  const escolhidas = todas.slice(-qtd).reverse();
+  const totalVP = escolhidas.reduce((s,p) => s + p.vp, 0);
+  const totalVF = escolhidas.reduce((s,p) => s + p.vf, 0);
+  const economia = totalVF - totalVP;
+  const escolhidasIds = new Set(escolhidas.map(p => p.numContrato));
+
+  // Tabela para Ver mais — segunda metade do contrato
+  const metade = Math.ceil(parcRestantes / 2);
+  const amortizaveis = todas.slice(-metade).reverse();
+  const tabelaHTML = amortizaveis.map(p => {
+    const sel = escolhidasIds.has(p.numContrato);
+    return `<div class="sc-result-row" style="${sel?'background:rgba(0,177,79,.12);border-radius:6px;padding:2px 8px;margin:1px 0':''}">
+      <span style="${sel?'color:var(--green-mid);font-weight:700':''}">
+        ${sel?'✓ ':''}Parcela ${p.numContrato} — ${p.mesesAFazer} mês(es)
+      </span>
+      <span style="${sel?'color:var(--green-mid)':''}">
+        ${fmt(p.vp)} <span style="color:rgba(255,255,255,.25);font-size:10px">/ cheio: ${fmt(p.vf)}</span>
+      </span>
+    </div>`;
+  }).join('');
+
+  const extraHTML = `
+    <div style="font-size:10.5px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-bottom:10px">
+      ${amortizaveis.length} parcelas amortizáveis (segunda metade do contrato)
+    </div>
+    <div class="sc-result-rows">${tabelaHTML}</div>
+    <div class="sc-disclaimer" style="margin-top:10px">✓ = parcelas quitadas com esta amortização. VP = VF ÷ (1+i)^n</div>`;
+
+  const el = document.getElementById('simResult');
+  if(!el) return;
+  el.className = 'sc-result visible';
+  el.innerHTML = `
+    <div class="sc-result-label">Amortizar as ${qtd} últimas parcelas antecipadamente</div>
+    <div class="sc-result-main">${fmt(economia)}</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:-8px;margin-bottom:14px">Economia em juros ao quitar ${qtd} parcela${qtd>1?'s':''} hoje</div>
+    <div class="sc-result-rows">
+      <div class="sc-result-row"><span>Parcela Price do contrato</span><span>${fmt(pmtCalc)}</span></div>
+      <div class="sc-result-row"><span>Saldo devedor atual</span><span>${fmt(saldoAtual)}</span></div>
+      <div class="sc-result-row"><span>Parcelas restantes</span><span>${parcRestantes}x</span></div>
+      <div class="sc-result-row"><span>Parcelas quitadas (${escolhidas[escolhidas.length-1].numContrato}→${escolhidas[0].numContrato})</span><span style="color:var(--green-mid)">${qtd}x mais distantes</span></div>
+      <div class="sc-result-row"><span>Custo total hoje (VP)</span><span style="color:var(--green-mid);font-weight:700">${fmt(totalVP)}</span></div>
+      <div class="sc-result-row"><span>Valor de face quitado (VF)</span><span>${fmt(totalVF)}</span></div>
+      <div class="sc-result-row"><span style="color:var(--green-mid);font-weight:700">Economia em juros</span><span style="color:var(--green-mid);font-weight:800">${fmt(economia)}</span></div>
+    </div>
+    <div class="sc-disclaimer">VP = ${fmt(parcVal)} ÷ (1 + ${fmtN(iTaxa,3)}%)^n</div>
+    <div id="resExtra" style="display:none;margin-top:12px">${extraHTML}</div>
+    <button onclick="toggleResExtra(this)" class="res-vermais-btn">▼ Ver mais</button>`;
+}
+
 const SIM_DESC = {
   veiculo:    'Simule o financiamento do seu próximo veículo com a Tabela Price. Informe o valor do carro, a entrada e o prazo — e veja exatamente quanto vai pagar por mês, o custo total e os juros embutidos.',
   imovel:     'Calcule a parcela do financiamento imobiliário com base na Tabela Price. Informe o valor do imóvel, entrada, taxa de juros anual e prazo em meses para descobrir a parcela mensal e a renda mínima necessária.',
@@ -1007,6 +1191,7 @@ const SIM_DESC = {
   loteria:    'Gere palpites inteligentes para Mega-Sena, Quina, Lotofácil e mais 6 loterias da Caixa. Os números são escolhidos com base nos mais frequentes dos últimos 20 concursos combinados com aleatoriedade.',
   area:       'Calcule a área de um terreno rural em m², hectares e alqueires (paulista, mineiro ou baiano). Informe as dimensões ou uma área já conhecida e veja a estimativa do valor de mercado por estado e tipo de uso.',
   quantidade: 'Calcule o valor de qualquer produto vendido por peso, volume ou unidade. Informe o preço por kg, litro ou unidade, a quantidade que quer levar — ou quanto tem disponível — e veja o total exato.',
+  amortizacao: 'Descubra quanto custa antecipar cada parcela do seu financiamento. Com a fórmula de Valor Presente (VP = VF ÷ (1+i)^n), veja quais parcelas são mais baratas para quitar hoje e quanto você economiza em juros amortizando as últimas parcelas primeiro.',
   fitness:    'Calcule seu IMC, TMB, gasto calórico diário e a necessidade de proteína, carboidrato, gordura e água, tudo personalizado para o seu objetivo: ganhar massa muscular ou perder gordura corporal.',
 };
 
