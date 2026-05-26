@@ -13,7 +13,11 @@ document.getElementById('next').style.display = 'none';
 
 // ── TOGGLE MORE CARDS ──
 let moreCardsOpen = false;
-function toggleMoreCards(){
+function toggleMoreCards(event){
+
+  if(event){
+    event.stopPropagation();
+  }
   const panel = document.getElementById('moreCardsPanel');
   const btn   = document.getElementById('catVerMais');
   moreCardsOpen = !moreCardsOpen;
@@ -46,10 +50,18 @@ track.querySelectorAll('.cat-card[data-sim]').forEach(card => {
 });
 
 // attach to grid cards (event delegation)
-document.getElementById('allCardsGrid').addEventListener('click', e => {
-  const card = e.target.closest('.cat-card[data-sim]');
-  if(card) handleCardClick(card);
-});
+const allCardsGrid = document.getElementById('allCardsGrid');
+
+if(allCardsGrid){
+  allCardsGrid.addEventListener('click', e => {
+    const card = e.target.closest('.cat-card[data-sim]');
+
+    if(card){
+      e.stopPropagation();
+      handleCardClick(card);
+    }
+  });
+}
 
 // ── STEPPER ──
 function stepDown(id,min=1){const e=document.getElementById(id);e.value=Math.max(min,+e.value-1);}
@@ -425,6 +437,14 @@ const sims = {
         <div class="sc-input-wrap" style="margin-top:4px">
           <span class="sc-prefix">R$</span>
           <input id="estBolsa" type="number" placeholder="Ex: 1500" value="">
+        </div>
+      </div>
+
+      <div class="sc-field">
+        <label>Quanto do Auxílio-transporte não foi utilizado? (O valor que recebe de Transporte e subtraia pelo valor que utilizou.)</label>
+        <div class="sc-input-wrap" style="margin-top:4px">
+          <span class="sc-prefix">R$</span>
+          <input id="estPassagem" type="number" placeholder="Ex: 150" value="0">
         </div>
       </div>
 
@@ -1528,6 +1548,7 @@ function calcEstagio(){
   const iniVal = document.getElementById('estIni')?.value;
   const fimVal = document.getElementById('estFim')?.value;
   const bolsa  = +document.getElementById('estBolsa')?.value || 0;
+  const passagem = +document.getElementById('estPassagem')?.value || 0;
 
   if(!iniVal || !fimVal){ alert('Preencha as datas de entrada e saída.'); return; }
 
@@ -1557,17 +1578,19 @@ function calcEstagio(){
   // 5. Multa 40% FGTS NÃO existe
 
   const total = bolsaProp + recessoProp;
+  const totalLiquido = bolsaProp - passagem;
 
   const el = document.getElementById('simResultEst');
   if(!el) return;
   el.className = 'sc-result visible';
   el.innerHTML = `
     <div class="sc-result-label">Total estimado a receber</div>
-    <div class="sc-result-main">${fmt(total)}</div>
+    <div class="sc-result-main">${fmt(totalLiquido)}</div>
     <div class="sc-result-rows">
       <div class="sc-result-row"><span>Período trabalhado</span><span>${Math.floor(mesesTotal / 12)}a ${mesesRest}m ${diasRest}d</span></div>
       <div class="sc-result-row"><span>Bolsa proporcional (${diasRest} dias)</span><span>${fmt(bolsaProp)}</span></div>
       <div class="sc-result-row"><span>Recesso proporcional</span><span>${fmt(recessoProp)}</span></div>
+      <div class="sc-result-row"><span>Passagem utilizada</span><span style="color:rgba(255,100,100,.9)">− ${fmt(passagem)}</span></div>
       <div class="sc-result-row"><span>13º salário</span><span style="color:rgba(255,255,255,.4)">Não se aplica</span></div>
       <div class="sc-result-row"><span>FGTS / Multa 40%</span><span style="color:rgba(255,255,255,.4)">Não se aplica</span></div>
     </div>
@@ -2836,6 +2859,38 @@ function calcArea(){
     </div>
     <button onclick="toggleResExtra(this)" class="res-vermais-btn">▼ Ver mais</button>`;
 }
+
+// ── MOBILE SEARCH ──
+function toggleMobileSearch(){
+  const bar = document.getElementById('mobileSearchBar');
+  const btn = document.getElementById('searchToggleBtn');
+  const isOpen = bar.style.display !== 'none';
+  if(isOpen){
+    closeMobileSearch();
+  } else {
+    bar.style.display = 'block';
+    btn.style.display = 'none';
+    setTimeout(()=>{ document.getElementById('mobileSearchInput')?.focus(); }, 50);
+  }
+}
+
+function closeMobileSearch(){
+  const bar = document.getElementById('mobileSearchBar');
+  const btn = document.getElementById('searchToggleBtn');
+  bar.style.display = 'none';
+  btn.style.display = 'inline-flex';
+}
+
+// close search when clicking outside
+document.addEventListener('click', e => {
+  const bar = document.getElementById('mobileSearchBar');
+  const btn = document.getElementById('searchToggleBtn');
+  if(bar && bar.style.display !== 'none'){
+    if(!bar.contains(e.target) && !btn.contains(e.target)){
+      closeMobileSearch();
+    }
+  }
+});
 
 document.querySelectorAll('.faq-question').forEach(btn=>{
   btn.addEventListener('click',()=>{

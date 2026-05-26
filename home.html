@@ -53,7 +53,7 @@
         <div class="cat-card" data-sim="veiculo"><div class="cat-icon"><i class="bi bi-car-front-fill"></i></div><span class="cat-label">Financiamento Veicular</span></div>
         <div class="cat-card" data-sim="imovel"><div class="cat-icon"><i class="bi bi-house-fill"></i></div><span class="cat-label">Financiamento Imobiliário</span></div>
         <div class="cat-card" data-sim="rescisao"><div class="cat-icon"><i class="bi bi-clipboard2-check-fill"></i></div><span class="cat-label">Cálculo de Rescisão</span></div>
-        <div class="cat-card cat-more" id="catVerMais" onclick="toggleMoreCards()"><div class="cat-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div><span class="cat-label">Ver mais</span></div>
+        <div class="cat-card cat-more" id="catVerMais" onclick="toggleMoreCards(event)"><div class="cat-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div><span class="cat-label">Ver mais</span></div>
       </div>
     </div>
     <button class="carousel-btn" id="next"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
@@ -65,7 +65,7 @@
   <div style="max-width:860px;margin:0 auto">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <span style="font-family:var(--ff);font-weight:700;font-size:15px;color:var(--gray-700)">Todas as calculadoras</span>
-      <button onclick="toggleMoreCards()" style="background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:26px;line-height:1;padding:0 4px">&times;</button>
+      <button onclick="toggleMoreCards(event)" style="background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:26px;line-height:1;padding:0 4px">&times;</button>
     </div>
     <div id="allCardsGrid">
 
@@ -123,7 +123,10 @@
 <!-- STATS -->
 <div class="stats-banner">
   <div class="stats-inner">
-    <div class="stat-item"><span class="stat-number">+15 calculadoras</span><div class="stat-label">e ferramentas financeiras</div>
+    <div class="stat-item">
+      <span class="stat-number">+15 calculadoras</span>
+      <div class="stat-label">e ferramentas financeiras</div>
+    </div>
   </div>
 </div>
 
