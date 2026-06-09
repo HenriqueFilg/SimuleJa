@@ -90,6 +90,10 @@ function cardHTML(icon,title,tag,body,hint){
   </div>
   <div class="sc-body">${body}</div>`;
 }
+function setEntradaPct(entradaId, totalId, pct){
+  const total = parseFloat(document.getElementById(totalId)?.value) || 0;
+  document.getElementById(entradaId).value = (total * pct).toFixed(2);
+}
 
 function showResult(id, label, main, rows, note, extraHTML=''){
   const el = document.getElementById(id);
@@ -192,7 +196,17 @@ const sims = {
   },
   veiculo(){
     simCard.innerHTML = cardHTML('bi-car-front-fill','Calculadora de Financiamento Veicular','Tabela Price',`
-      <div class="sc-row">${moneyField('veiV','Valor do veículo desejado','50000')}${moneyField('veiE','Valor de entrada','10000')}</div>
+      <div class="sc-row">${moneyField('veiV','Valor do veículo desejado','50000')}<div class="sc-field"><label>Valor de entrada</label>
+    <div class="sc-input-wrap">
+      <span class="sc-prefix">R$</span>
+      <input id="veiE" type="number" value="10000" placeholder="0,00">
+      <button class="sc-clear" onclick="document.getElementById('veiE').value=''">×</button>
+    </div>
+    <div class="rate-pills">
+      <button class="rate-pill" onclick="setEntradaPct('veiE','veiV',0.20)">20%</button>
+      <button class="rate-pill" onclick="setEntradaPct('veiE','veiV',0.40)">40%</button>
+      <button class="rate-pill" onclick="setEntradaPct('veiE','veiV',0.60)">60%</button>
+    </div></div></div>
       <div class="sc-row">
         ${rateField('veiT','Taxa de juros (use a média ou edite)','1.99')}
         <div class="sc-field">
@@ -215,7 +229,17 @@ const sims = {
   },
   imovel(){
     simCard.innerHTML = cardHTML('bi-house-fill','Simulador de Financiamento Imobiliário','Tabela Price',`
-      <div class="sc-row">${moneyField('imoV','Valor do imóvel','400000')}${moneyField('imoE','Entrada (mín. 20%)','80000')}</div>
+      <div class="sc-row">${moneyField('imoV','Valor do imóvel','400000')}<div class="sc-field"><label>Entrada (mín. 20%)</label>
+    <div class="sc-input-wrap">
+      <span class="sc-prefix">R$</span>
+      <input id="imoE" type="number" value="80000" placeholder="0,00">
+      <button class="sc-clear" onclick="document.getElementById('imoE').value=''">×</button>
+    </div>
+    <div class="rate-pills">
+      <button class="rate-pill" onclick="setEntradaPct('imoE','imoV',0.20)">20%</button>
+      <button class="rate-pill" onclick="setEntradaPct('imoE','imoV',0.40)">40%</button>
+      <button class="rate-pill" onclick="setEntradaPct('imoE','imoV',0.60)">60%</button>
+    </div></div></div>
       <div class="sc-row">
         ${rateField('imoT','Taxa de juros anual (%)','10.5','% Anual ▾')}
         <div class="sc-field">
@@ -441,7 +465,7 @@ const sims = {
       </div>
 
       <div class="sc-field">
-        <label>Quanto do Auxílio-transporte não foi utilizado? (O valor que recebe de Transporte e subtraia pelo valor que utilizou.)</label>
+        <label>Qual valor utilizou de passagem?</label>
         <div class="sc-input-wrap" style="margin-top:4px">
           <span class="sc-prefix">R$</span>
           <input id="estPassagem" type="number" placeholder="Ex: 150" value="0">
