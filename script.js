@@ -94,6 +94,19 @@ function setEntradaPct(entradaId, totalId, pct){
   const total = parseFloat(document.getElementById(totalId)?.value) || 0;
   document.getElementById(entradaId).value = (total * pct).toFixed(2);
 }
+// ── AMORTIZAÇÃO RATE TOGGLE ──
+let _amorRateMode = 'am';
+function setAmorRate(mode){
+  _amorRateMode = mode;
+  const toggle = document.getElementById('amorRateToggle');
+  const pillAM = document.getElementById('amorPillAM');
+  const pillAA = document.getElementById('amorPillAA');
+  if(toggle) toggle.textContent = mode === 'am' ? '% a.m.' : '% a.a.';
+  if(pillAM){ pillAM.classList.toggle('active', mode === 'am'); }
+  if(pillAA){ pillAA.classList.toggle('active', mode === 'aa'); }
+}
+function toggleAmorRate(){ setAmorRate(_amorRateMode === 'am' ? 'aa' : 'am'); }
+
 
 function showResult(id, label, main, rows, note, extraHTML=''){
   const el = document.getElementById(id);
@@ -962,10 +975,19 @@ const sims = {
           <div class="sc-field"><label>Valor financiado (R$)</label>
             <div class="sc-input-wrap"><span class="sc-prefix">R$</span><input id="amorValor" type="number" step="0.01" value="50000" placeholder="0,00"></div>
           </div>
-          <div class="sc-field"><label>Taxa de juros mensal (%)</label>
+          <div class="sc-field"><label>Taxa de juros (%)</label>
             <div class="sc-input-wrap">
               <input id="amorTaxa" type="number" step="0.001" value="2.1" style="padding-left:14px;height:50px">
-              <span class="sc-suffix">% a.m.</span>
+              <button id="amorRateToggle" onclick="toggleAmorRate()" style="
+                height:50px;padding:0 10px;border:none;border-left:1px solid var(--gray-200);
+                background:var(--gray-100);color:var(--gray-700);font-family:var(--ff);
+                font-weight:700;font-size:12px;cursor:pointer;border-radius:0 10px 10px 0;
+                white-space:nowrap;transition:background .15s,color .15s
+              ">% a.m.</button>
+            </div>
+            <div class="rate-pills" style="margin-top:5px">
+              <button class="rate-pill active" id="amorPillAM" onclick="setAmorRate('am')">% a.m.</button>
+              <button class="rate-pill"         id="amorPillAA" onclick="setAmorRate('aa')">% a.a.</button>
             </div>
           </div>
         </div>
@@ -1144,7 +1166,10 @@ function calcAmortizacao(){
   const paga    = parseInt(document.getElementById('amorAtual')?.value)      || 0;
   const parcVal = parseFloat(document.getElementById('amorParcVal')?.value)  || 0;
   const qtd     = parseInt(document.getElementById('amorQtd')?.value)        || 1;
-  const i       = iTaxa / 100;
+  const _rateMode = typeof _amorRateMode !== 'undefined' ? _amorRateMode : 'am';
+  const i       = _rateMode === 'aa'
+    ? Math.pow(1 + iTaxa / 100, 1 / 12) - 1
+    : iTaxa / 100;
 
   if(!PV || !i || !N || !parcVal){
     alert('Preencha: valor financiado, taxa, total de parcelas e valor da parcela.');
@@ -2925,6 +2950,74 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
   });
 });
 
+
+// ── SEARCH FILTER ──
+(function(){
+  function normalize(str){
+    return str.toLowerCase()
+              .normalize('NFD')
+              .replace(/[̀-ͯ]/g, '')
+              .trim();
+  }
+
+  function runSearch(q){
+    // Abre o painel de cards se ainda não estiver aberto
+    if(q && !moreCardsOpen){
+      const panel = document.getElementById('moreCardsPanel');
+      if(panel) {
+        moreCardsOpen = true;
+        panel.style.display = 'block';
+        const btn = document.getElementById('catVerMais');
+        if(btn){
+          const lbl = btn.querySelector('.cat-label');
+          const ico = btn.querySelector('.cat-icon i');
+          if(lbl) lbl.textContent = 'Ver menos';
+          if(ico) ico.className = 'bi bi-x-lg';
+          btn.classList.add('active');
+        }
+      }
+    }
+
+    const grid = document.getElementById('allCardsGrid');
+    if(!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll('.cat-card[data-sim]'));
+
+    // Filtra os cards
+    let visible = [];
+    cards.forEach(card => {
+      const label = normalize(card.querySelector('.cat-label')?.textContent || '');
+      const match = !q || label.includes(q);
+      card.style.display = match ? '' : 'none';
+      if(match) visible.push(card);
+    });
+
+    // Esconde seções vazias
+    grid.querySelectorAll('.more-cards-section').forEach(section => {
+      const hasVisible = Array.from(section.querySelectorAll('.cat-card[data-sim]'))
+        .some(c => c.style.display !== 'none');
+      section.style.display = hasVisible ? '' : 'none';
+    });
+
+    // Abre automaticamente se sobrar exatamente um resultado
+    if(q && visible.length === 1){
+      const sim = visible[0].dataset.sim;
+      if(sim) setTimeout(() => openSim(sim), 150);
+    }
+
+    // Query vazia: restaura tudo
+    if(!q){
+      cards.forEach(c => c.style.display = '');
+      grid.querySelectorAll('.more-cards-section').forEach(s => s.style.display = '');
+    }
+  }
+
+  // Vincula os dois inputs (desktop + mobile)
+  ['desktopSearchInput', 'mobileSearchInput'].forEach(id => {
+    const inp = document.getElementById(id);
+    if(inp) inp.addEventListener('input', () => runSearch(normalize(inp.value)));
+  });
+})();
 // ── SCROLL FADE ──
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.style.animationPlayState='running';obs.unobserve(e.target);}});
