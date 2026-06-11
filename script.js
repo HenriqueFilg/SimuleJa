@@ -90,23 +90,6 @@ function cardHTML(icon,title,tag,body,hint){
   </div>
   <div class="sc-body">${body}</div>`;
 }
-function setEntradaPct(entradaId, totalId, pct){
-  const total = parseFloat(document.getElementById(totalId)?.value) || 0;
-  document.getElementById(entradaId).value = (total * pct).toFixed(2);
-}
-// ── AMORTIZAÇÃO RATE TOGGLE ──
-let _amorRateMode = 'am';
-function setAmorRate(mode){
-  _amorRateMode = mode;
-  const toggle = document.getElementById('amorRateToggle');
-  const pillAM = document.getElementById('amorPillAM');
-  const pillAA = document.getElementById('amorPillAA');
-  if(toggle) toggle.textContent = mode === 'am' ? '% a.m.' : '% a.a.';
-  if(pillAM){ pillAM.classList.toggle('active', mode === 'am'); }
-  if(pillAA){ pillAA.classList.toggle('active', mode === 'aa'); }
-}
-function toggleAmorRate(){ setAmorRate(_amorRateMode === 'am' ? 'aa' : 'am'); }
-
 
 function showResult(id, label, main, rows, note, extraHTML=''){
   const el = document.getElementById(id);
@@ -209,17 +192,7 @@ const sims = {
   },
   veiculo(){
     simCard.innerHTML = cardHTML('bi-car-front-fill','Calculadora de Financiamento Veicular','Tabela Price',`
-      <div class="sc-row">${moneyField('veiV','Valor do veículo desejado','50000')}<div class="sc-field"><label>Valor de entrada</label>
-    <div class="sc-input-wrap">
-      <span class="sc-prefix">R$</span>
-      <input id="veiE" type="number" value="10000" placeholder="0,00">
-      <button class="sc-clear" onclick="document.getElementById('veiE').value=''">×</button>
-    </div>
-    <div class="rate-pills">
-      <button class="rate-pill" onclick="setEntradaPct('veiE','veiV',0.20)">20%</button>
-      <button class="rate-pill" onclick="setEntradaPct('veiE','veiV',0.40)">40%</button>
-      <button class="rate-pill" onclick="setEntradaPct('veiE','veiV',0.60)">60%</button>
-    </div></div></div>
+      <div class="sc-row">${moneyField('veiV','Valor do veículo desejado','50000')}${moneyField('veiE','Valor de entrada','10000')}</div>
       <div class="sc-row">
         ${rateField('veiT','Taxa de juros (use a média ou edite)','1.99')}
         <div class="sc-field">
@@ -242,17 +215,7 @@ const sims = {
   },
   imovel(){
     simCard.innerHTML = cardHTML('bi-house-fill','Simulador de Financiamento Imobiliário','Tabela Price',`
-      <div class="sc-row">${moneyField('imoV','Valor do imóvel','400000')}<div class="sc-field"><label>Entrada (mín. 20%)</label>
-    <div class="sc-input-wrap">
-      <span class="sc-prefix">R$</span>
-      <input id="imoE" type="number" value="80000" placeholder="0,00">
-      <button class="sc-clear" onclick="document.getElementById('imoE').value=''">×</button>
-    </div>
-    <div class="rate-pills">
-      <button class="rate-pill" onclick="setEntradaPct('imoE','imoV',0.20)">20%</button>
-      <button class="rate-pill" onclick="setEntradaPct('imoE','imoV',0.40)">40%</button>
-      <button class="rate-pill" onclick="setEntradaPct('imoE','imoV',0.60)">60%</button>
-    </div></div></div>
+      <div class="sc-row">${moneyField('imoV','Valor do imóvel','400000')}${moneyField('imoE','Entrada (mín. 20%)','80000')}</div>
       <div class="sc-row">
         ${rateField('imoT','Taxa de juros anual (%)','10.5','% Anual ▾')}
         <div class="sc-field">
@@ -474,14 +437,6 @@ const sims = {
         <div class="sc-input-wrap" style="margin-top:4px">
           <span class="sc-prefix">R$</span>
           <input id="estBolsa" type="number" placeholder="Ex: 1500" value="">
-        </div>
-      </div>
-
-      <div class="sc-field">
-        <label>Qual valor utilizou de passagem?</label>
-        <div class="sc-input-wrap" style="margin-top:4px">
-          <span class="sc-prefix">R$</span>
-          <input id="estPassagem" type="number" placeholder="Ex: 150" value="0">
         </div>
       </div>
 
@@ -975,19 +930,10 @@ const sims = {
           <div class="sc-field"><label>Valor financiado (R$)</label>
             <div class="sc-input-wrap"><span class="sc-prefix">R$</span><input id="amorValor" type="number" step="0.01" value="50000" placeholder="0,00"></div>
           </div>
-          <div class="sc-field"><label>Taxa de juros (%)</label>
+          <div class="sc-field"><label>Taxa de juros mensal (%)</label>
             <div class="sc-input-wrap">
               <input id="amorTaxa" type="number" step="0.001" value="2.1" style="padding-left:14px;height:50px">
-              <button id="amorRateToggle" onclick="toggleAmorRate()" style="
-                height:50px;padding:0 10px;border:none;border-left:1px solid var(--gray-200);
-                background:var(--gray-100);color:var(--gray-700);font-family:var(--ff);
-                font-weight:700;font-size:12px;cursor:pointer;border-radius:0 10px 10px 0;
-                white-space:nowrap;transition:background .15s,color .15s
-              ">% a.m.</button>
-            </div>
-            <div class="rate-pills" style="margin-top:5px">
-              <button class="rate-pill active" id="amorPillAM" onclick="setAmorRate('am')">% a.m.</button>
-              <button class="rate-pill"         id="amorPillAA" onclick="setAmorRate('aa')">% a.a.</button>
+              <span class="sc-suffix">% a.m.</span>
             </div>
           </div>
         </div>
@@ -1051,6 +997,86 @@ const sims = {
     </div>`;
   },
 
+
+  combustivel(){
+    simCard.innerHTML = cardHTML('bi-fuel-pump-fill','Calculadora de Combustível','Gasolina · Diesel · Etanol',`
+        <!-- MODO -->
+        <div class="sc-field">
+          <label style="font-weight:700;color:var(--gray-700)">O que você quer descobrir?</label>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px">
+            <button id="combModoA" onclick="setCombModo('A')"
+              style="padding:11px 14px;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;
+                     font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+              <i class="bi bi-currency-dollar" style="margin-right:5px"></i>Qual é o preço por litro?
+              <span style="font-size:11px;font-weight:400;opacity:.85;display:block;margin-top:1px">Sei quanto paguei e quantos litros abasteci</span>
+            </button>
+            <button id="combModoB" onclick="setCombModo('B')"
+              style="padding:11px 14px;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-700);
+                     font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+              <i class="bi bi-droplet-fill" style="margin-right:5px"></i>Quantos litros abasteci?
+              <span style="font-size:11px;font-weight:400;color:var(--gray-400);display:block;margin-top:1px">Sei o preço do litro e quanto paguei</span>
+            </button>
+            <button id="combModoC" onclick="setCombModo('C')"
+              style="padding:11px 14px;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-700);
+                     font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+              <i class="bi bi-receipt" style="margin-right:5px"></i>Quanto vou gastar?
+              <span style="font-size:11px;font-weight:400;color:var(--gray-400);display:block;margin-top:1px">Sei o preço do litro e quantos litros quero</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- TIPO DE COMBUSTÍVEL -->
+        <div class="sc-field">
+          <label>Tipo de combustível</label>
+          <div class="sc-select-wrap" style="margin-top:4px">
+            <select id="combTipo" style="height:50px;font-size:13px">
+              <option value="gasolina_c">Gasolina Comum</option>
+              <option value="gasolina_a">Gasolina Aditivada</option>
+              <option value="etanol">Etanol / Álcool</option>
+              <option value="diesel_s10">Diesel S-10</option>
+              <option value="diesel_s500">Diesel S-500</option>
+              <option value="gnv">GNV (m³)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- CAMPO: TOTAL PAGO -->
+        <div class="sc-field" id="combFieldTotal">
+          <label id="combLabelTotal">Valor total pago</label>
+          <div class="sc-input-wrap" style="margin-top:4px">
+            <span class="sc-prefix">R$</span>
+            <input id="combTotal" type="number" placeholder="Ex: 150" step="0.01">
+            <button class="sc-clear" onclick="document.getElementById('combTotal').value=''">×</button>
+          </div>
+        </div>
+
+        <!-- CAMPO: PREÇO POR LITRO -->
+        <div class="sc-field" id="combFieldPreco">
+          <label id="combLabelPreco">Preço por litro</label>
+          <div class="sc-input-wrap" style="margin-top:4px">
+            <span class="sc-prefix">R$</span>
+            <input id="combPreco" type="number" placeholder="Ex: 6.49" step="0.001">
+            <button class="sc-clear" onclick="document.getElementById('combPreco').value=''">×</button>
+          </div>
+        </div>
+
+        <!-- CAMPO: LITROS -->
+        <div class="sc-field" id="combFieldLitros">
+          <label id="combLabelLitros">Litros abastecidos</label>
+          <div class="sc-input-wrap" style="margin-top:4px">
+            <input id="combLitros" type="number" placeholder="Ex: 30" step="0.01" style="padding-left:14px">
+            <span class="sc-suffix">L</span>
+          </div>
+        </div>
+
+        <div id="combResult" class="sc-result"></div>
+
+        <div class="sc-footer" style="margin-top:4px">
+          <span class="sc-hint">✦ Gasolina vs Etanol incluso</span>
+          <button class="sc-calc-btn" onclick="calcCombustivel()">Calcular</button>
+        </div>`);
+    setCombModo('A');
+  },
   area(){
     simCard.innerHTML = `
     <div class="sc-header">
@@ -1166,10 +1192,7 @@ function calcAmortizacao(){
   const paga    = parseInt(document.getElementById('amorAtual')?.value)      || 0;
   const parcVal = parseFloat(document.getElementById('amorParcVal')?.value)  || 0;
   const qtd     = parseInt(document.getElementById('amorQtd')?.value)        || 1;
-  const _rateMode = typeof _amorRateMode !== 'undefined' ? _amorRateMode : 'am';
-  const i       = _rateMode === 'aa'
-    ? Math.pow(1 + iTaxa / 100, 1 / 12) - 1
-    : iTaxa / 100;
+  const i       = iTaxa / 100;
 
   if(!PV || !i || !N || !parcVal){
     alert('Preencha: valor financiado, taxa, total de parcelas e valor da parcela.');
@@ -1261,6 +1284,7 @@ const SIM_DESC = {
   area:       'Calcule a área de um terreno rural em m², hectares e alqueires (paulista, mineiro ou baiano). Informe as dimensões ou uma área já conhecida e veja a estimativa do valor de mercado por estado e tipo de uso.',
   quantidade: 'Calcule o valor de qualquer produto vendido por peso, volume ou unidade. Informe o preço por kg, litro ou unidade, a quantidade que quer levar — ou quanto tem disponível — e veja o total exato.',
   amortizacao: 'Descubra quanto custa antecipar cada parcela do seu financiamento. Com a fórmula de Valor Presente (VP = VF ÷ (1+i)^n), veja quais parcelas são mais baratas para quitar hoje e quanto você economiza em juros amortizando as últimas parcelas primeiro.',
+  combustivel: 'Informe dois valores quaisquer — total pago, preço por litro ou litros abastecidos — e a calculadora descobre o terceiro automaticamente. Funciona com gasolina comum, aditivada, etanol, diesel e GNV.',
   fitness:    'Calcule seu IMC, TMB, gasto calórico diário e a necessidade de proteína, carboidrato, gordura e água, tudo personalizado para o seu objetivo: ganhar massa muscular ou perder gordura corporal.',
 };
 
@@ -1597,7 +1621,6 @@ function calcEstagio(){
   const iniVal = document.getElementById('estIni')?.value;
   const fimVal = document.getElementById('estFim')?.value;
   const bolsa  = +document.getElementById('estBolsa')?.value || 0;
-  const passagem = +document.getElementById('estPassagem')?.value || 0;
 
   if(!iniVal || !fimVal){ alert('Preencha as datas de entrada e saída.'); return; }
 
@@ -1627,19 +1650,17 @@ function calcEstagio(){
   // 5. Multa 40% FGTS NÃO existe
 
   const total = bolsaProp + recessoProp;
-  const totalLiquido = bolsaProp - passagem;
 
   const el = document.getElementById('simResultEst');
   if(!el) return;
   el.className = 'sc-result visible';
   el.innerHTML = `
     <div class="sc-result-label">Total estimado a receber</div>
-    <div class="sc-result-main">${fmt(totalLiquido)}</div>
+    <div class="sc-result-main">${fmt(total)}</div>
     <div class="sc-result-rows">
       <div class="sc-result-row"><span>Período trabalhado</span><span>${Math.floor(mesesTotal / 12)}a ${mesesRest}m ${diasRest}d</span></div>
       <div class="sc-result-row"><span>Bolsa proporcional (${diasRest} dias)</span><span>${fmt(bolsaProp)}</span></div>
       <div class="sc-result-row"><span>Recesso proporcional</span><span>${fmt(recessoProp)}</span></div>
-      <div class="sc-result-row"><span>Passagem utilizada</span><span style="color:rgba(255,100,100,.9)">− ${fmt(passagem)}</span></div>
       <div class="sc-result-row"><span>13º salário</span><span style="color:rgba(255,255,255,.4)">Não se aplica</span></div>
       <div class="sc-result-row"><span>FGTS / Multa 40%</span><span style="color:rgba(255,255,255,.4)">Não se aplica</span></div>
     </div>
@@ -2951,20 +2972,131 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
 });
 
 
-// ── SEARCH FILTER ──
-(function(){
-  function normalize(str){
-    return str.toLowerCase()
-              .normalize('NFD')
-              .replace(/[̀-ͯ]/g, '')
-              .trim();
+// ── COMBUSTÍVEL ──
+let _combModo = 'A';
+
+function setCombModo(modo){
+  _combModo = modo;
+  ['A','B','C'].forEach(k => {
+    const btn = document.getElementById('combModo' + k);
+    if(!btn) return;
+    const on = k === modo;
+    btn.style.background  = on ? 'var(--green)' : '#fff';
+    btn.style.borderColor = on ? 'var(--green)' : 'var(--gray-200)';
+    btn.style.color       = on ? '#fff' : 'var(--gray-700)';
+    const sub = btn.querySelector('span');
+    if(sub) sub.style.color = on ? 'rgba(255,255,255,.85)' : 'var(--gray-400)';
+  });
+
+  const calcField = modo === 'A' ? 'preco' : modo === 'B' ? 'litros' : 'total';
+  const fieldMap  = { total: 'combTotal', preco: 'combPreco', litros: 'combLitros' };
+  const labelMap  = { total: 'Valor total pago', preco: 'Preço por litro', litros: 'Litros abastecidos' };
+  const phMap     = { total: 'Ex: 150', preco: 'Ex: 6.49', litros: 'Ex: 30' };
+
+  ['total','preco','litros'].forEach(k => {
+    const inp = document.getElementById(fieldMap[k]);
+    const lbl = document.getElementById('combLabel' + k.charAt(0).toUpperCase() + k.slice(1));
+    const wrap = document.getElementById('combField' + k.charAt(0).toUpperCase() + k.slice(1));
+    if(inp){ inp.disabled = false; inp.value = ''; inp.placeholder = phMap[k]; inp.style.color = ''; }
+    if(lbl){ lbl.innerHTML = labelMap[k]; }
+    if(wrap){ wrap.style.opacity = '1'; }
+    if(k === calcField){
+      if(inp){ inp.disabled = true; inp.placeholder = 'Será calculado...'; inp.style.color = 'var(--gray-400)'; }
+      if(lbl){ lbl.innerHTML = labelMap[k] + ' <span style="font-size:11px;font-weight:600;color:var(--green);background:rgba(0,177,79,.1);padding:1px 7px;border-radius:20px;margin-left:4px">calculado</span>'; }
+      if(wrap){ wrap.style.opacity = '.65'; }
+    }
+  });
+
+  const res = document.getElementById('combResult');
+  if(res){ res.className = 'sc-result'; res.innerHTML = ''; }
+}
+
+function calcCombustivel(){
+  const tipo   = document.getElementById('combTipo')?.value || 'gasolina_c';
+  const total  = parseFloat(document.getElementById('combTotal')?.value)  || 0;
+  const preco  = parseFloat(document.getElementById('combPreco')?.value)  || 0;
+  const litros = parseFloat(document.getElementById('combLitros')?.value) || 0;
+  const el     = document.getElementById('combResult');
+  if(!el) return;
+
+  const tipoLabel = { gasolina_c:'Gasolina Comum', gasolina_a:'Gasolina Aditivada',
+    etanol:'Etanol / Álcool', diesel_s10:'Diesel S-10', diesel_s500:'Diesel S-500', gnv:'GNV' }[tipo] || tipo;
+  const unidade  = tipo === 'gnv' ? 'm³' : 'L';
+  const isEtanol = tipo === 'etanol';
+  const isGasol  = tipo === 'gasolina_c' || tipo === 'gasolina_a';
+
+  let precoCalc, litrosCalc, totalCalc, erroMsg;
+
+  if(_combModo === 'A'){
+    if(!total || !litros) erroMsg = 'Informe o valor total pago e os litros abastecidos.';
+    else { precoCalc = total / litros; litrosCalc = litros; totalCalc = total; }
+  } else if(_combModo === 'B'){
+    if(!total || !preco) erroMsg = 'Informe o valor total pago e o preço por litro.';
+    else { litrosCalc = total / preco; precoCalc = preco; totalCalc = total; }
+  } else {
+    if(!litros || !preco) erroMsg = 'Informe os litros e o preço por litro.';
+    else { totalCalc = litros * preco; precoCalc = preco; litrosCalc = litros; }
   }
 
+  if(erroMsg){
+    el.className = 'sc-result visible';
+    el.innerHTML = '<div class="sc-disclaimer" style="color:#f87171">' + erroMsg + '</div>';
+    return;
+  }
+
+  if(_combModo === 'A') document.getElementById('combPreco').value  = precoCalc.toFixed(3);
+  if(_combModo === 'B') document.getElementById('combLitros').value = litrosCalc.toFixed(2);
+  if(_combModo === 'C') document.getElementById('combTotal').value  = totalCalc.toFixed(2);
+
+  let compHtml = '';
+  if(isEtanol){
+    const precoGasol = precoCalc / 0.70;
+    compHtml = '<div style="margin-top:12px;background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px">'
+      + '<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-bottom:6px"><i class="bi bi-bar-chart-fill" style="margin-right:4px"></i>VALE A PENA? (Regra dos 70%)</div>'
+      + '<div class="sc-result-row"><span>Preço do Etanol</span><span>R$ ' + precoCalc.toFixed(3) + '/L</span></div>'
+      + '<div class="sc-result-row"><span>Gasolina equivalente seria</span><span>R$ ' + precoGasol.toFixed(3) + '/L</span></div>'
+      + '<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(0,177,79,.15);font-size:12px;font-weight:700;color:var(--green)">'
+      + '<i class="bi bi-check-circle-fill" style="margin-right:5px"></i>Etanol compensa se gasolina estiver acima de R$ ' + precoGasol.toFixed(2) + '/L</div></div>';
+  } else if(isGasol){
+    const precoEtanolMax = precoCalc * 0.70;
+    compHtml = '<div style="margin-top:12px;background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px">'
+      + '<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-bottom:6px"><i class="bi bi-bar-chart-fill" style="margin-right:4px"></i>VALE A PENA USAR ETANOL? (Regra dos 70%)</div>'
+      + '<div class="sc-result-row"><span>Preço da gasolina</span><span>R$ ' + precoCalc.toFixed(3) + '/L</span></div>'
+      + '<div class="sc-result-row"><span>Etanol compensa se custar até</span><span>R$ ' + precoEtanolMax.toFixed(3) + '/L</span></div>'
+      + '<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,200,0,.1);font-size:12px;font-weight:700;color:#fbbf24">'
+      + '<i class="bi bi-lightning-fill" style="margin-right:5px"></i>Se etanol estiver abaixo de R$ ' + precoEtanolMax.toFixed(2) + '/L, vale trocar</div></div>';
+  }
+
+  el.className = 'sc-result visible';
+  el.innerHTML =
+    '<div class="sc-result-label">Resultado do Abastecimento</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;margin-bottom:14px">'
+    + '<div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px 10px;text-align:center">'
+    + '<div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Total Pago</div>'
+    + '<div style="font-size:16px;font-weight:800;color:#fff">' + fmt(totalCalc) + '</div></div>'
+    + '<div style="background:rgba(0,177,79,.15);border-radius:10px;padding:12px 10px;text-align:center;border:1px solid rgba(0,177,79,.3)">'
+    + '<div style="font-size:10px;color:var(--green);font-weight:700;margin-bottom:4px;text-transform:uppercase">Preço/' + unidade + '</div>'
+    + '<div style="font-size:16px;font-weight:800;color:var(--green)">R$ ' + precoCalc.toFixed(3) + '</div></div>'
+    + '<div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px 10px;text-align:center">'
+    + '<div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Litros</div>'
+    + '<div style="font-size:16px;font-weight:800;color:#fff">' + litrosCalc.toFixed(2) + ' ' + unidade + '</div></div></div>'
+    + '<div class="sc-result-rows">'
+    + '<div class="sc-result-row"><span>Combustível</span><span>' + tipoLabel + '</span></div>'
+    + '<div class="sc-result-row"><span>Custo por 100 km<br><span style="font-size:11px;color:rgba(255,255,255,.4)">Estimado (12 km/L média)</span></span><span>R$ ' + ((100/12)*precoCalc).toFixed(2) + '</span></div>'
+    + '</div>'
+    + compHtml
+    + '<div class="sc-disclaimer">Comparativo álcool/gasolina pela Regra dos 70%: etanol compensa quando seu preço é ≤ 70% do preço da gasolina.</div>';
+}
+
+// ── SEARCH FILTER ──
+(function(){
+  function normalize(s){
+    return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+  }
   function runSearch(q){
-    // Abre o painel de cards se ainda não estiver aberto
     if(q && !moreCardsOpen){
       const panel = document.getElementById('moreCardsPanel');
-      if(panel) {
+      if(panel){
         moreCardsOpen = true;
         panel.style.display = 'block';
         const btn = document.getElementById('catVerMais');
@@ -2977,47 +3109,35 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
         }
       }
     }
-
     const grid = document.getElementById('allCardsGrid');
     if(!grid) return;
-
     const cards = Array.from(grid.querySelectorAll('.cat-card[data-sim]'));
-
-    // Filtra os cards
     let visible = [];
-    cards.forEach(card => {
-      const label = normalize(card.querySelector('.cat-label')?.textContent || '');
+    cards.forEach(c => {
+      const label = normalize(c.querySelector('.cat-label')?.textContent || '');
       const match = !q || label.includes(q);
-      card.style.display = match ? '' : 'none';
-      if(match) visible.push(card);
+      c.style.display = match ? '' : 'none';
+      if(match) visible.push(c);
     });
-
-    // Esconde seções vazias
-    grid.querySelectorAll('.more-cards-section').forEach(section => {
-      const hasVisible = Array.from(section.querySelectorAll('.cat-card[data-sim]'))
-        .some(c => c.style.display !== 'none');
-      section.style.display = hasVisible ? '' : 'none';
+    grid.querySelectorAll('.more-cards-section').forEach(sec => {
+      const has = Array.from(sec.querySelectorAll('.cat-card[data-sim]')).some(c => c.style.display !== 'none');
+      sec.style.display = has ? '' : 'none';
     });
-
-    // Abre automaticamente se sobrar exatamente um resultado
     if(q && visible.length === 1){
       const sim = visible[0].dataset.sim;
       if(sim) setTimeout(() => openSim(sim), 150);
     }
-
-    // Query vazia: restaura tudo
     if(!q){
       cards.forEach(c => c.style.display = '');
       grid.querySelectorAll('.more-cards-section').forEach(s => s.style.display = '');
     }
   }
-
-  // Vincula os dois inputs (desktop + mobile)
-  ['desktopSearchInput', 'mobileSearchInput'].forEach(id => {
+  ['desktopSearchInput','mobileSearchInput'].forEach(id => {
     const inp = document.getElementById(id);
     if(inp) inp.addEventListener('input', () => runSearch(normalize(inp.value)));
   });
 })();
+
 // ── SCROLL FADE ──
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.style.animationPlayState='running';obs.unobserve(e.target);}});
