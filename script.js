@@ -3138,6 +3138,43 @@ function calcCombustivel(){
   });
 })();
 
+// ── RESULT PAGE ──
+function openResultPage(html, title){
+  const page    = document.getElementById('resultPage');
+  const content = document.getElementById('resultPageContent');
+  const titleEl = document.getElementById('resultPageTitle');
+  if(!page || !content) return;
+  content.innerHTML = html;
+  if(titleEl) titleEl.textContent = title || 'Resultado';
+  page.style.display = 'block';
+  // Trigger animation
+  requestAnimationFrame(() => {
+    page.classList.remove('open');
+    requestAnimationFrame(() => page.classList.add('open'));
+  });
+  page.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeResultPage(){
+  const page = document.getElementById('resultPage');
+  if(!page) return;
+  page.style.display = 'none';
+  page.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Intercept every .sc-calc-btn click and open the result page
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.sc-calc-btn')) return;
+  setTimeout(() => {
+    const result = document.querySelector('.sc-result.visible');
+    if(!result || !result.innerHTML.trim()) return;
+    const title = document.querySelector('.sc-title')?.textContent?.trim() || 'Resultado';
+    openResultPage(result.innerHTML, title);
+  }, 50);
+});
+
 // ── SCROLL FADE ──
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.style.animationPlayState='running';obs.unobserve(e.target);}});
