@@ -2891,6 +2891,68 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
   });
 });
 
+// ── SEARCH FILTER ──
+(function(){
+  function normalize(s){
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+  }
+
+  function runSearch(q){
+    // Abre o painel de cards se ainda não estiver aberto
+    if(q && !moreCardsOpen){
+      const panel = document.getElementById('moreCardsPanel');
+      if(panel){
+        moreCardsOpen = true;
+        panel.style.display = 'block';
+        const btn = document.getElementById('catVerMais');
+        if(btn){
+          const lbl = btn.querySelector('.cat-label');
+          const ico = btn.querySelector('.cat-icon i');
+          if(lbl) lbl.textContent = 'Ver menos';
+          if(ico) ico.className = 'bi bi-x-lg';
+          btn.classList.add('active');
+        }
+      }
+    }
+
+    const grid = document.getElementById('allCardsGrid');
+    if(!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll('.cat-card[data-sim]'));
+    let visible = [];
+    cards.forEach(c => {
+      const label = normalize(c.querySelector('.cat-label')?.textContent || '');
+      const match = !q || label.includes(q);
+      c.style.display = match ? '' : 'none';
+      if(match) visible.push(c);
+    });
+
+    // Esconde seções sem resultados
+    grid.querySelectorAll('.more-cards-section').forEach(sec => {
+      const has = Array.from(sec.querySelectorAll('.cat-card[data-sim]')).some(c => c.style.display !== 'none');
+      sec.style.display = has ? '' : 'none';
+    });
+
+    // Abre automaticamente se sobrar exatamente um resultado
+    if(q && visible.length === 1){
+      const sim = visible[0].dataset.sim;
+      if(sim) setTimeout(() => openSim(sim), 150);
+    }
+
+    // Query vazia: restaura tudo
+    if(!q){
+      cards.forEach(c => c.style.display = '');
+      grid.querySelectorAll('.more-cards-section').forEach(s => s.style.display = '');
+    }
+  }
+
+  // Vincula desktop E mobile
+  ['desktopSearchInput', 'mobileSearchInput'].forEach(id => {
+    const inp = document.getElementById(id);
+    if(inp) inp.addEventListener('input', () => runSearch(normalize(inp.value)));
+  });
+})();
+
 // ── SCROLL FADE ──
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.style.animationPlayState='running';obs.unobserve(e.target);}});
