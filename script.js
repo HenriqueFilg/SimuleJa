@@ -998,6 +998,73 @@ const sims = {
     </div>`;
   },
 
+
+  combustivel(){
+    simCard.innerHTML = cardHTML('bi-fuel-pump-fill','Calculadora de Combustível','Gasolina · Diesel · Etanol',`
+        <div class="sc-field">
+          <label style="font-weight:700;color:var(--gray-700)">O que você quer descobrir?</label>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px">
+            <button id="combModoA" onclick="setCombModo('A')"
+              style="padding:11px 14px;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+              <i class="bi bi-currency-dollar" style="margin-right:5px"></i>Qual é o preço por litro?
+              <span style="font-size:11px;font-weight:400;opacity:.85;display:block;margin-top:1px">Sei quanto paguei e quantos litros abasteci</span>
+            </button>
+            <button id="combModoB" onclick="setCombModo('B')"
+              style="padding:11px 14px;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-700);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+              <i class="bi bi-droplet-fill" style="margin-right:5px"></i>Quantos litros abasteci?
+              <span style="font-size:11px;font-weight:400;color:var(--gray-400);display:block;margin-top:1px">Sei o preço do litro e quanto paguei</span>
+            </button>
+            <button id="combModoC" onclick="setCombModo('C')"
+              style="padding:11px 14px;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-700);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+              <i class="bi bi-receipt" style="margin-right:5px"></i>Quanto vou gastar?
+              <span style="font-size:11px;font-weight:400;color:var(--gray-400);display:block;margin-top:1px">Sei o preço do litro e quantos litros quero</span>
+            </button>
+          </div>
+        </div>
+        <div class="sc-field">
+          <label>Tipo de combustível</label>
+          <div class="sc-select-wrap" style="margin-top:4px">
+            <select id="combTipo" style="height:50px;font-size:13px">
+              <option value="gasolina_c">Gasolina Comum</option>
+              <option value="gasolina_a">Gasolina Aditivada</option>
+              <option value="etanol">Etanol / Álcool</option>
+              <option value="diesel_s10">Diesel S-10</option>
+              <option value="diesel_s500">Diesel S-500</option>
+              <option value="gnv">GNV (m³)</option>
+            </select>
+          </div>
+        </div>
+        <div class="sc-field" id="combFieldTotal">
+          <label id="combLabelTotal">Valor total pago</label>
+          <div class="sc-input-wrap" style="margin-top:4px">
+            <span class="sc-prefix">R$</span>
+            <input id="combTotal" type="number" placeholder="Ex: 150" step="0.01">
+            <button class="sc-clear" onclick="document.getElementById('combTotal').value=''">×</button>
+          </div>
+        </div>
+        <div class="sc-field" id="combFieldPreco">
+          <label id="combLabelPreco">Preço por litro</label>
+          <div class="sc-input-wrap" style="margin-top:4px">
+            <span class="sc-prefix">R$</span>
+            <input id="combPreco" type="number" placeholder="Ex: 6.49" step="0.001">
+            <button class="sc-clear" onclick="document.getElementById('combPreco').value=''">×</button>
+          </div>
+        </div>
+        <div class="sc-field" id="combFieldLitros">
+          <label id="combLabelLitros">Litros abastecidos</label>
+          <div class="sc-input-wrap" style="margin-top:4px">
+            <input id="combLitros" type="number" placeholder="Ex: 30" step="0.01" style="padding-left:14px">
+            <span class="sc-suffix">L</span>
+          </div>
+        </div>
+        <div id="combResult" class="sc-result"></div>
+        <div class="sc-footer" style="margin-top:4px">
+          <span class="sc-hint">✦ Gasolina vs Etanol incluso</span>
+          <button class="sc-calc-btn" onclick="calcCombustivel()">Calcular</button>
+        </div>`);
+    setCombModo('A');
+  },
+
   area(){
     simCard.innerHTML = `
     <div class="sc-header">
@@ -1205,6 +1272,7 @@ const SIM_DESC = {
   area:       'Calcule a área de um terreno rural em m², hectares e alqueires (paulista, mineiro ou baiano). Informe as dimensões ou uma área já conhecida e veja a estimativa do valor de mercado por estado e tipo de uso.',
   quantidade: 'Calcule o valor de qualquer produto vendido por peso, volume ou unidade. Informe o preço por kg, litro ou unidade, a quantidade que quer levar — ou quanto tem disponível — e veja o total exato.',
   amortizacao: 'Descubra quanto custa antecipar cada parcela do seu financiamento. Com a fórmula de Valor Presente (VP = VF ÷ (1+i)^n), veja quais parcelas são mais baratas para quitar hoje e quanto você economiza em juros amortizando as últimas parcelas primeiro.',
+  combustivel: 'Informe dois valores quaisquer — total pago, preço por litro ou litros abastecidos — e a calculadora descobre o terceiro. Funciona com gasolina, etanol, diesel e GNV.',
   fitness:    'Calcule seu IMC, TMB, gasto calórico diário e a necessidade de proteína, carboidrato, gordura e água, tudo personalizado para o seu objetivo: ganhar massa muscular ou perder gordura corporal.',
 };
 
@@ -2890,6 +2958,106 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
     if(!open) item.classList.add('open');
   });
 });
+
+// ── COMBUSTÍVEL ──
+let _combModo = 'A';
+
+function setCombModo(modo){
+  _combModo = modo;
+  ['A','B','C'].forEach(k => {
+    const btn = document.getElementById('combModo'+k);
+    if(!btn) return;
+    const on = k === modo;
+    btn.style.background  = on ? 'var(--green)' : '#fff';
+    btn.style.borderColor = on ? 'var(--green)' : 'var(--gray-200)';
+    btn.style.color       = on ? '#fff'         : 'var(--gray-700)';
+    const sub = btn.querySelector('span');
+    if(sub) sub.style.color = on ? 'rgba(255,255,255,.85)' : 'var(--gray-400)';
+  });
+  const calcField = modo === 'A' ? 'preco' : modo === 'B' ? 'litros' : 'total';
+  const labelMap  = {total:'Valor total pago', preco:'Preço por litro', litros:'Litros abastecidos'};
+  const phMap     = {total:'Ex: 150', preco:'Ex: 6.49', litros:'Ex: 30'};
+  const capMap    = {total:'Total', preco:'Preco', litros:'Litros'};
+  ['total','preco','litros'].forEach(k => {
+    const inp  = document.getElementById('comb' + capMap[k]);
+    const lbl  = document.getElementById('combLabel' + capMap[k]);
+    const wrap = document.getElementById('combField' + capMap[k]);
+    if(inp)  { inp.disabled = false; inp.value = ''; inp.placeholder = phMap[k]; inp.style.color = ''; }
+    if(lbl)  { lbl.innerHTML = labelMap[k]; }
+    if(wrap) { wrap.style.opacity = '1'; }
+    if(k === calcField){
+      if(inp)  { inp.disabled = true; inp.placeholder = 'Será calculado...'; inp.style.color = 'var(--gray-400)'; }
+      if(lbl)  { lbl.innerHTML = labelMap[k] + ' <span style="font-size:11px;font-weight:600;color:var(--green);background:rgba(0,177,79,.1);padding:1px 7px;border-radius:20px;margin-left:4px">calculado</span>'; }
+      if(wrap) { wrap.style.opacity = '.65'; }
+    }
+  });
+  const res = document.getElementById('combResult');
+  if(res){ res.className = 'sc-result'; res.innerHTML = ''; }
+}
+
+function calcCombustivel(){
+  const tipo   = document.getElementById('combTipo')?.value || 'gasolina_c';
+  const total  = parseFloat(document.getElementById('combTotal')?.value)  || 0;
+  const preco  = parseFloat(document.getElementById('combPreco')?.value)  || 0;
+  const litros = parseFloat(document.getElementById('combLitros')?.value) || 0;
+  const el     = document.getElementById('combResult');
+  if(!el) return;
+  const tipoLabel = {gasolina_c:'Gasolina Comum',gasolina_a:'Gasolina Aditivada',etanol:'Etanol / Álcool',diesel_s10:'Diesel S-10',diesel_s500:'Diesel S-500',gnv:'GNV'}[tipo]||tipo;
+  const unidade = tipo === 'gnv' ? 'm³' : 'L';
+  let precoCalc, litrosCalc, totalCalc, erroMsg;
+  if(_combModo === 'A'){
+    if(!total||!litros) erroMsg='Informe o valor total pago e os litros abastecidos.';
+    else { precoCalc=total/litros; litrosCalc=litros; totalCalc=total; }
+  } else if(_combModo === 'B'){
+    if(!total||!preco) erroMsg='Informe o valor total pago e o preço por litro.';
+    else { litrosCalc=total/preco; precoCalc=preco; totalCalc=total; }
+  } else {
+    if(!litros||!preco) erroMsg='Informe os litros e o preço por litro.';
+    else { totalCalc=litros*preco; precoCalc=preco; litrosCalc=litros; }
+  }
+  if(erroMsg){
+    el.className = 'sc-result visible';
+    el.innerHTML = '<div class="sc-disclaimer" style="color:#f87171">'+erroMsg+'</div>';
+    return;
+  }
+  if(_combModo==='A') document.getElementById('combPreco').value  = precoCalc.toFixed(3);
+  if(_combModo==='B') document.getElementById('combLitros').value = litrosCalc.toFixed(2);
+  if(_combModo==='C') document.getElementById('combTotal').value  = totalCalc.toFixed(2);
+  const isEtanol = tipo==='etanol';
+  const isGasol  = tipo==='gasolina_c'||tipo==='gasolina_a';
+  let compHtml = '';
+  if(isEtanol){
+    const pg = precoCalc/0.70;
+    compHtml = '<div style="margin-top:12px;background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px">'
+      +'<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-bottom:6px"><i class="bi bi-bar-chart-fill" style="margin-right:4px"></i>VALE A PENA? (Regra dos 70%)</div>'
+      +'<div class="sc-result-row"><span>Preço do Etanol</span><span>R$ '+precoCalc.toFixed(3)+'/L</span></div>'
+      +'<div class="sc-result-row"><span>Gasolina equivalente seria</span><span>R$ '+pg.toFixed(3)+'/L</span></div>'
+      +'<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(0,177,79,.15);font-size:12px;font-weight:700;color:var(--green)">'
+      +'<i class="bi bi-check-circle-fill" style="margin-right:5px"></i>Etanol compensa se gasolina estiver acima de R$ '+pg.toFixed(2)+'/L</div></div>';
+  } else if(isGasol){
+    const pe = precoCalc*0.70;
+    compHtml = '<div style="margin-top:12px;background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px">'
+      +'<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-bottom:6px"><i class="bi bi-bar-chart-fill" style="margin-right:4px"></i>VALE A PENA USAR ETANOL?</div>'
+      +'<div class="sc-result-row"><span>Preço da gasolina</span><span>R$ '+precoCalc.toFixed(3)+'/L</span></div>'
+      +'<div class="sc-result-row"><span>Etanol compensa se custar até</span><span>R$ '+pe.toFixed(3)+'/L</span></div>'
+      +'<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,200,0,.1);font-size:12px;font-weight:700;color:#fbbf24">'
+      +'<i class="bi bi-lightning-fill" style="margin-right:5px"></i>Se etanol estiver abaixo de R$ '+pe.toFixed(2)+'/L, vale trocar</div></div>';
+  }
+  el.className = 'sc-result visible';
+  el.innerHTML =
+    '<div class="sc-result-label">Resultado do Abastecimento</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;margin-bottom:14px">'
+    +'<div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Total Pago</div><div style="font-size:16px;font-weight:800;color:#fff">'+fmt(totalCalc)+'</div></div>'
+    +'<div style="background:rgba(0,177,79,.15);border-radius:10px;padding:12px 10px;text-align:center;border:1px solid rgba(0,177,79,.3)"><div style="font-size:10px;color:var(--green);font-weight:700;margin-bottom:4px;text-transform:uppercase">Preço/'+unidade+'</div><div style="font-size:16px;font-weight:800;color:var(--green)">R$ '+precoCalc.toFixed(3)+'</div></div>'
+    +'<div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Litros</div><div style="font-size:16px;font-weight:800;color:#fff">'+litrosCalc.toFixed(2)+' '+unidade+'</div></div>'
+    +'</div>'
+    +'<div class="sc-result-rows">'
+    +'<div class="sc-result-row"><span>Combustível</span><span>'+tipoLabel+'</span></div>'
+    +'<div class="sc-result-row"><span>Custo por 100 km <span style="font-size:11px;color:rgba(255,255,255,.4)">(12 km/L est.)</span></span><span>R$ '+((100/12)*precoCalc).toFixed(2)+'</span></div>'
+    +'</div>'
+    +compHtml
+    +'<div class="sc-disclaimer">Comparativo álcool/gasolina pela Regra dos 70%: etanol compensa quando seu preço é ≤ 70% da gasolina.</div>';
+}
 
 // ── SEARCH FILTER ──
 (function(){
