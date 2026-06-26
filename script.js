@@ -1004,18 +1004,15 @@ const sims = {
         <div class="sc-field">
           <label style="font-weight:700;color:var(--gray-700)">O que você quer descobrir?</label>
           <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px">
-            <button id="combModoA" onclick="setCombModo('A')"
-              style="padding:11px 14px;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+            <button id="combModoA" onclick="setCombModo('A')" style="padding:11px 14px;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
               <i class="bi bi-currency-dollar" style="margin-right:5px"></i>Qual é o preço por litro?
               <span style="font-size:11px;font-weight:400;opacity:.85;display:block;margin-top:1px">Sei quanto paguei e quantos litros abasteci</span>
             </button>
-            <button id="combModoB" onclick="setCombModo('B')"
-              style="padding:11px 14px;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-700);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+            <button id="combModoB" onclick="setCombModo('B')" style="padding:11px 14px;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-700);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
               <i class="bi bi-droplet-fill" style="margin-right:5px"></i>Quantos litros abasteci?
               <span style="font-size:11px;font-weight:400;color:var(--gray-400);display:block;margin-top:1px">Sei o preço do litro e quanto paguei</span>
             </button>
-            <button id="combModoC" onclick="setCombModo('C')"
-              style="padding:11px 14px;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-700);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
+            <button id="combModoC" onclick="setCombModo('C')" style="padding:11px 14px;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-700);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;text-align:left;transition:all .2s">
               <i class="bi bi-receipt" style="margin-right:5px"></i>Quanto vou gastar?
               <span style="font-size:11px;font-weight:400;color:var(--gray-400);display:block;margin-top:1px">Sei o preço do litro e quantos litros quero</span>
             </button>
@@ -1034,24 +1031,19 @@ const sims = {
             </select>
           </div>
         </div>
-        <div class="sc-field" id="combFieldTotal">
-          <label id="combLabelTotal">Valor total pago</label>
-          <div class="sc-input-wrap" style="margin-top:4px">
-            <span class="sc-prefix">R$</span>
+        <div class="sc-field" id="combFieldTotal"><label id="combLabelTotal">Valor total pago</label>
+          <div class="sc-input-wrap" style="margin-top:4px"><span class="sc-prefix">R$</span>
             <input id="combTotal" type="number" placeholder="Ex: 150" step="0.01">
             <button class="sc-clear" onclick="document.getElementById('combTotal').value=''">×</button>
           </div>
         </div>
-        <div class="sc-field" id="combFieldPreco">
-          <label id="combLabelPreco">Preço por litro</label>
-          <div class="sc-input-wrap" style="margin-top:4px">
-            <span class="sc-prefix">R$</span>
+        <div class="sc-field" id="combFieldPreco"><label id="combLabelPreco">Preço por litro</label>
+          <div class="sc-input-wrap" style="margin-top:4px"><span class="sc-prefix">R$</span>
             <input id="combPreco" type="number" placeholder="Ex: 6.49" step="0.001">
             <button class="sc-clear" onclick="document.getElementById('combPreco').value=''">×</button>
           </div>
         </div>
-        <div class="sc-field" id="combFieldLitros">
-          <label id="combLabelLitros">Litros abastecidos</label>
+        <div class="sc-field" id="combFieldLitros"><label id="combLabelLitros">Litros abastecidos</label>
           <div class="sc-input-wrap" style="margin-top:4px">
             <input id="combLitros" type="number" placeholder="Ex: 30" step="0.01" style="padding-left:14px">
             <span class="sc-suffix">L</span>
@@ -1068,12 +1060,10 @@ const sims = {
   kwh(){
     simCard.innerHTML = cardHTML('bi-lightning-charge-fill','Calculadora de kWh','Consumo · Solar',`
         <div style="display:flex;gap:8px;margin-bottom:18px">
-          <button id="kwhTabConsumo" onclick="setKwhTab('consumo')"
-            style="flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s">
+          <button id="kwhTabConsumo" onclick="setKwhTab('consumo')" style="flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s">
             <i class="bi bi-plug-fill" style="margin-right:5px"></i>Consumo
           </button>
-          <button id="kwhTabSolar" onclick="setKwhTab('solar')"
-            style="flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s">
+          <button id="kwhTabSolar" onclick="setKwhTab('solar')" style="flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s">
             <i class="bi bi-sun-fill" style="margin-right:5px"></i>Solar
           </button>
         </div>
@@ -1088,12 +1078,11 @@ const sims = {
           </div>
           <div class="sc-field">
             <label>Tarifa de energia (R$/kWh)</label>
-            <div class="sc-input-wrap" style="margin-top:4px">
-              <span class="sc-prefix">R$</span>
+            <div class="sc-input-wrap" style="margin-top:4px"><span class="sc-prefix">R$</span>
               <input id="kwhTarifa" type="number" placeholder="Ex: 0.92" step="0.001">
               <button class="sc-clear" onclick="document.getElementById('kwhTarifa').value=''">×</button>
             </div>
-            <div style="font-size:11px;color:var(--gray-400);margin-top:5px"><i class="bi bi-info-circle" style="margin-right:3px"></i>Verifique sua conta de luz (média BR: ~R$ 0,92/kWh em 2025)</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:5px"><i class="bi bi-info-circle" style="margin-right:3px"></i>Média BR: ~R$ 0,92/kWh em 2025</div>
           </div>
           <div id="kwhResultConsumo" class="sc-result"></div>
           <div class="sc-footer" style="margin-top:4px">
@@ -1147,8 +1136,7 @@ const sims = {
           </div>
           <div class="sc-field">
             <label>Tarifa de energia (R$/kWh) — opcional</label>
-            <div class="sc-input-wrap" style="margin-top:4px">
-              <span class="sc-prefix">R$</span>
+            <div class="sc-input-wrap" style="margin-top:4px"><span class="sc-prefix">R$</span>
               <input id="kwhSolarTarifa" type="number" placeholder="Ex: 0.92" step="0.001">
               <button class="sc-clear" onclick="document.getElementById('kwhSolarTarifa').value=''">×</button>
             </div>
@@ -3058,42 +3046,37 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
 });
 
 // ── COMBUSTÍVEL ──
-let _combModo = 'A';
+let _combModo='A';
 function setCombModo(modo){
-  _combModo = modo;
+  _combModo=modo;
   ['A','B','C'].forEach(k=>{
-    const btn=document.getElementById('combModo'+k); if(!btn) return;
+    const b=document.getElementById('combModo'+k);if(!b)return;
     const on=k===modo;
-    btn.style.background=on?'var(--green)':'#fff';
-    btn.style.borderColor=on?'var(--green)':'var(--gray-200)';
-    btn.style.color=on?'#fff':'var(--gray-700)';
-    const sub=btn.querySelector('span'); if(sub) sub.style.color=on?'rgba(255,255,255,.85)':'var(--gray-400)';
+    b.style.background=on?'var(--green)':'#fff';b.style.borderColor=on?'var(--green)':'var(--gray-200)';b.style.color=on?'#fff':'var(--gray-700)';
+    const s=b.querySelector('span');if(s)s.style.color=on?'rgba(255,255,255,.85)':'var(--gray-400)';
   });
   const cf=modo==='A'?'preco':modo==='B'?'litros':'total';
   const lm={total:'Valor total pago',preco:'Preço por litro',litros:'Litros abastecidos'};
   const pm={total:'Ex: 150',preco:'Ex: 6.49',litros:'Ex: 30'};
   const cm={total:'Total',preco:'Preco',litros:'Litros'};
   ['total','preco','litros'].forEach(k=>{
-    const inp=document.getElementById('comb'+cm[k]);
-    const lbl=document.getElementById('combLabel'+cm[k]);
-    const wrap=document.getElementById('combField'+cm[k]);
-    if(inp){inp.disabled=false;inp.value='';inp.placeholder=pm[k];inp.style.color='';}
-    if(lbl) lbl.innerHTML=lm[k];
-    if(wrap) wrap.style.opacity='1';
+    const i=document.getElementById('comb'+cm[k]),l=document.getElementById('combLabel'+cm[k]),w=document.getElementById('combField'+cm[k]);
+    if(i){i.disabled=false;i.value='';i.placeholder=pm[k];i.style.color='';}
+    if(l)l.innerHTML=lm[k];if(w)w.style.opacity='1';
     if(k===cf){
-      if(inp){inp.disabled=true;inp.placeholder='Será calculado...';inp.style.color='var(--gray-400)';}
-      if(lbl) lbl.innerHTML=lm[k]+' <span style="font-size:11px;font-weight:600;color:var(--green);background:rgba(0,177,79,.1);padding:1px 7px;border-radius:20px;margin-left:4px">calculado</span>';
-      if(wrap) wrap.style.opacity='.65';
+      if(i){i.disabled=true;i.placeholder='Será calculado...';i.style.color='var(--gray-400)';}
+      if(l)l.innerHTML=lm[k]+' <span style="font-size:11px;font-weight:600;color:var(--green);background:rgba(0,177,79,.1);padding:1px 7px;border-radius:20px;margin-left:4px">calculado</span>';
+      if(w)w.style.opacity='.65';
     }
   });
-  const res=document.getElementById('combResult'); if(res){res.className='sc-result';res.innerHTML='';}
+  const r=document.getElementById('combResult');if(r){r.className='sc-result';r.innerHTML='';}
 }
 function calcCombustivel(){
   const tipo=document.getElementById('combTipo')?.value||'gasolina_c';
   const total=parseFloat(document.getElementById('combTotal')?.value)||0;
   const preco=parseFloat(document.getElementById('combPreco')?.value)||0;
   const litros=parseFloat(document.getElementById('combLitros')?.value)||0;
-  const el=document.getElementById('combResult'); if(!el) return;
+  const el=document.getElementById('combResult');if(!el)return;
   const tl={gasolina_c:'Gasolina Comum',gasolina_a:'Gasolina Aditivada',etanol:'Etanol / Álcool',diesel_s10:'Diesel S-10',diesel_s500:'Diesel S-500',gnv:'GNV'}[tipo]||tipo;
   const un=tipo==='gnv'?'m³':'L';
   let pc,lc,tc,err;
@@ -3101,61 +3084,37 @@ function calcCombustivel(){
   else if(_combModo==='B'){if(!total||!preco)err='Informe o total pago e o preço/litro.';else{lc=total/preco;pc=preco;tc=total;}}
   else{if(!litros||!preco)err='Informe os litros e o preço/litro.';else{tc=litros*preco;pc=preco;lc=litros;}}
   if(err){el.className='sc-result visible';el.innerHTML='<div class="sc-disclaimer" style="color:#f87171">'+err+'</div>';return;}
-  if(_combModo==='A') document.getElementById('combPreco').value=pc.toFixed(3);
-  if(_combModo==='B') document.getElementById('combLitros').value=lc.toFixed(2);
-  if(_combModo==='C') document.getElementById('combTotal').value=tc.toFixed(2);
-  const isE=tipo==='etanol', isG=tipo==='gasolina_c'||tipo==='gasolina_a';
+  if(_combModo==='A')document.getElementById('combPreco').value=pc.toFixed(3);
+  if(_combModo==='B')document.getElementById('combLitros').value=lc.toFixed(2);
+  if(_combModo==='C')document.getElementById('combTotal').value=tc.toFixed(2);
+  const isE=tipo==='etanol',isG=tipo==='gasolina_c'||tipo==='gasolina_a';
   let comp='';
   if(isE){const pg=pc/0.70;comp='<div style="margin-top:12px;background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-bottom:6px"><i class="bi bi-bar-chart-fill" style="margin-right:4px"></i>VALE A PENA? (Regra dos 70%)</div><div class="sc-result-row"><span>Preço do Etanol</span><span>R$ '+pc.toFixed(3)+'/L</span></div><div class="sc-result-row"><span>Gasolina equivalente</span><span>R$ '+pg.toFixed(3)+'/L</span></div><div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(0,177,79,.15);font-size:12px;font-weight:700;color:var(--green)"><i class="bi bi-check-circle-fill" style="margin-right:5px"></i>Etanol compensa se gasolina > R$ '+pg.toFixed(2)+'/L</div></div>';}
   else if(isG){const pe=pc*0.70;comp='<div style="margin-top:12px;background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-bottom:6px"><i class="bi bi-bar-chart-fill" style="margin-right:4px"></i>VALE USAR ETANOL? (Regra dos 70%)</div><div class="sc-result-row"><span>Preço da gasolina</span><span>R$ '+pc.toFixed(3)+'/L</span></div><div class="sc-result-row"><span>Etanol compensa se custar até</span><span>R$ '+pe.toFixed(3)+'/L</span></div><div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,200,0,.1);font-size:12px;font-weight:700;color:#fbbf24"><i class="bi bi-lightning-fill" style="margin-right:5px"></i>Se etanol < R$ '+pe.toFixed(2)+'/L, vale trocar</div></div>';}
   el.className='sc-result visible';
-  el.innerHTML='<div class="sc-result-label">Resultado do Abastecimento</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;margin-bottom:14px">'
-    +'<div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Total</div><div style="font-size:16px;font-weight:800;color:#fff">'+fmt(tc)+'</div></div>'
-    +'<div style="background:rgba(0,177,79,.15);border-radius:10px;padding:12px 10px;text-align:center;border:1px solid rgba(0,177,79,.3)"><div style="font-size:10px;color:var(--green);font-weight:700;margin-bottom:4px;text-transform:uppercase">Preço/'+un+'</div><div style="font-size:16px;font-weight:800;color:var(--green)">R$ '+pc.toFixed(3)+'</div></div>'
-    +'<div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Litros</div><div style="font-size:16px;font-weight:800;color:#fff">'+lc.toFixed(2)+' '+un+'</div></div>'
-    +'</div>'
-    +'<div class="sc-result-rows"><div class="sc-result-row"><span>Combustível</span><span>'+tl+'</span></div>'
-    +'<div class="sc-result-row"><span>Custo/100km <span style="font-size:11px;color:rgba(255,255,255,.4)">(12km/L est.)</span></span><span>R$ '+((100/12)*pc).toFixed(2)+'</span></div></div>'
-    +comp+'<div class="sc-disclaimer">Regra dos 70%: etanol compensa quando custa ≤ 70% do preço da gasolina.</div>';
+  el.innerHTML='<div class="sc-result-label">Resultado do Abastecimento</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;margin-bottom:14px"><div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Total</div><div style="font-size:16px;font-weight:800;color:#fff">'+fmt(tc)+'</div></div><div style="background:rgba(0,177,79,.15);border-radius:10px;padding:12px 10px;text-align:center;border:1px solid rgba(0,177,79,.3)"><div style="font-size:10px;color:var(--green);font-weight:700;margin-bottom:4px;text-transform:uppercase">Preço/'+un+'</div><div style="font-size:16px;font-weight:800;color:var(--green)">R$ '+pc.toFixed(3)+'</div></div><div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Litros</div><div style="font-size:16px;font-weight:800;color:#fff">'+lc.toFixed(2)+' '+un+'</div></div></div><div class="sc-result-rows"><div class="sc-result-row"><span>Combustível</span><span>'+tl+'</span></div><div class="sc-result-row"><span>Custo/100km (12km/L est.)</span><span>R$ '+((100/12)*pc).toFixed(2)+'</span></div></div>'+comp+'<div class="sc-disclaimer">Regra dos 70%: etanol compensa quando custa ≤ 70% do preço da gasolina.</div>';
 }
 
 // ── KWH ──
 let _kwhTab='consumo';
 function setKwhTab(tab){
   _kwhTab=tab;
-  const bC=document.getElementById('kwhTabConsumo'), bS=document.getElementById('kwhTabSolar');
-  const pC=document.getElementById('kwhPanelConsumo'), pS=document.getElementById('kwhPanelSolar');
-  if(!bC||!bS) return;
-  if(tab==='consumo'){
-    bC.style.cssText='flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s';
-    bS.style.cssText='flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s';
-    if(pC) pC.style.display=''; if(pS) pS.style.display='none';
-  } else {
-    bS.style.cssText='flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s';
-    bC.style.cssText='flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s';
-    if(pS) pS.style.display=''; if(pC) pC.style.display='none';
-  }
+  const bC=document.getElementById('kwhTabConsumo'),bS=document.getElementById('kwhTabSolar');
+  const pC=document.getElementById('kwhPanelConsumo'),pS=document.getElementById('kwhPanelSolar');
+  if(!bC||!bS)return;
+  const ON='flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--green);background:var(--green);color:#fff;font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s';
+  const OFF='flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:var(--ff);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s';
+  if(tab==='consumo'){bC.style.cssText=ON;bS.style.cssText=OFF;if(pC)pC.style.display='';if(pS)pS.style.display='none';}
+  else{bS.style.cssText=ON;bC.style.cssText=OFF;if(pS)pS.style.display='';if(pC)pC.style.display='none';}
 }
 function calcKwhConsumo(){
   const consumo=parseFloat(document.getElementById('kwhConsumo')?.value)||0;
   const tarifa=parseFloat(document.getElementById('kwhTarifa')?.value)||0;
-  const el=document.getElementById('kwhResultConsumo'); if(!el) return;
+  const el=document.getElementById('kwhResultConsumo');if(!el)return;
   if(!consumo||!tarifa){el.className='sc-result visible';el.innerHTML='<div class="sc-disclaimer" style="color:#f87171">Preencha o consumo e a tarifa.</div>';return;}
-  const mes=consumo*tarifa, ano=mes*12;
+  const mes=consumo*tarifa,ano=mes*12;
   el.className='sc-result visible';
-  el.innerHTML='<div class="sc-result-label">Resultado</div>'
-    +'<div style="text-align:center;padding:18px 0 10px">'
-    +'<div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:6px">Seu consumo de <strong style="color:#fff">'+consumo.toFixed(1)+' kWh</strong> equivale a</div>'
-    +'<div style="font-size:38px;font-weight:800;color:var(--green);font-family:var(--ff)">'+fmt(mes)+'</div>'
-    +'<div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:4px">com tarifa de R$ '+tarifa.toFixed(4)+'/kWh</div>'
-    +'</div>'
-    +'<div class="sc-result-rows">'
-    +'<div class="sc-result-row"><span>Consumo</span><span>'+consumo.toFixed(2)+' kWh</span></div>'
-    +'<div class="sc-result-row"><span>Tarifa</span><span>R$ '+tarifa.toFixed(4)+'/kWh</span></div>'
-    +'<div class="sc-result-row" style="border-top:1px solid rgba(255,255,255,.1);padding-top:10px;margin-top:4px"><span>Projeção anual com esse consumo</span><span style="color:var(--green);font-weight:800">R$ '+ano.toFixed(2)+' por ano</span></div>'
-    +'</div>'
-    +'<div class="sc-disclaimer">Estimativa. O valor real inclui taxas, tributos e bandeira tarifária da ANEEL.</div>';
+  el.innerHTML='<div class="sc-result-label">Resultado</div><div style="text-align:center;padding:18px 0 10px"><div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:6px">Seu consumo de <strong style="color:#fff">'+consumo.toFixed(1)+' kWh</strong> equivale a</div><div style="font-size:38px;font-weight:800;color:var(--green);font-family:var(--ff)">'+fmt(mes)+'</div><div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:4px">com tarifa de R$ '+tarifa.toFixed(4)+'/kWh</div></div><div class="sc-result-rows"><div class="sc-result-row"><span>Consumo</span><span>'+consumo.toFixed(2)+' kWh</span></div><div class="sc-result-row"><span>Tarifa</span><span>R$ '+tarifa.toFixed(4)+'/kWh</span></div><div class="sc-result-row" style="border-top:1px solid rgba(255,255,255,.1);padding-top:10px;margin-top:4px"><span>Projeção anual com esse consumo</span><span style="color:var(--green);font-weight:800">R$ '+ano.toFixed(2)+' por ano</span></div></div><div class="sc-disclaimer">Estimativa. O valor real inclui taxas, tributos e bandeira tarifária da ANEEL.</div>';
 }
 function calcKwhSolar(){
   const potW=parseFloat(document.getElementById('kwhSolarPot')?.value)||0;
@@ -3164,29 +3123,118 @@ function calcKwhSolar(){
   const hsp=hspSel==='custom'?parseFloat(document.getElementById('kwhSolarHSPCustom')?.value)||0:parseFloat(hspSel);
   const rend=(parseFloat(document.getElementById('kwhSolarRend')?.value)||80)/100;
   const tarifa=parseFloat(document.getElementById('kwhSolarTarifa')?.value)||0;
-  const el=document.getElementById('kwhResultSolar'); if(!el) return;
+  const el=document.getElementById('kwhResultSolar');if(!el)return;
   if(!potW||!hsp){el.className='sc-result visible';el.innerHTML='<div class="sc-disclaimer" style="color:#f87171">Preencha a potência da placa e as horas de sol.</div>';return;}
-  const kWp=(potW*qtd)/1000;
-  const dia=kWp*hsp*rend;
-  const mes=dia*30;
-  const ano=dia*365;
-  const emM=tarifa?mes*tarifa:null;
-  const emA=tarifa?ano*tarifa:null;
+  const kWp=(potW*qtd)/1000,dia=kWp*hsp*rend,mes=dia*30,ano=dia*365;
+  const emM=tarifa?mes*tarifa:null,emA=tarifa?ano*tarifa:null;
   el.className='sc-result visible';
-  el.innerHTML='<div class="sc-result-label">Geração Estimada do Sistema</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;margin-bottom:14px">'
-    +'<div style="background:rgba(255,255,255,.08);border-radius:10px;padding:14px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Por mês</div><div style="font-size:24px;font-weight:800;color:var(--green)">'+mes.toFixed(1)+'</div><div style="font-size:11px;color:rgba(255,255,255,.4)">kWh</div></div>'
-    +'<div style="background:rgba(255,255,255,.08);border-radius:10px;padding:14px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Por ano</div><div style="font-size:24px;font-weight:800;color:var(--green)">'+ano.toFixed(1)+'</div><div style="font-size:11px;color:rgba(255,255,255,.4)">kWh</div></div>'
-    +'</div>'
-    +'<div class="sc-result-rows">'
-    +'<div class="sc-result-row"><span>Potência do sistema</span><span>'+(kWp*1000).toFixed(0)+' Wp ('+qtd+'× '+potW+'Wp)</span></div>'
-    +'<div class="sc-result-row"><span>HSP utilizado</span><span>'+hsp.toFixed(1)+' h/dia</span></div>'
-    +'<div class="sc-result-row"><span>Rendimento</span><span>'+(rend*100).toFixed(0)+'%</span></div>'
-    +'<div class="sc-result-row"><span>Geração diária</span><span>'+dia.toFixed(2)+' kWh/dia</span></div>'
-    +(emM!==null?'<div class="sc-result-row" style="border-top:1px solid rgba(255,255,255,.1);padding-top:10px;margin-top:4px"><span>Economia mensal estimada</span><span style="color:var(--green);font-weight:800">'+fmt(emM)+'</span></div><div class="sc-result-row"><span>Economia anual estimada</span><span style="color:var(--green);font-weight:800">'+fmt(emA)+'</span></div>':'')
-    +'</div>'
-    +'<div class="sc-disclaimer">Fórmula: kWp × HSP × Rendimento × 30 dias. Valores estimados; geração real varia por sombreamento, temperatura e localização.</div>';
+  el.innerHTML='<div class="sc-result-label">Geração Estimada do Sistema</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;margin-bottom:14px"><div style="background:rgba(255,255,255,.08);border-radius:10px;padding:14px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Por mês</div><div style="font-size:24px;font-weight:800;color:var(--green)">'+mes.toFixed(1)+'</div><div style="font-size:11px;color:rgba(255,255,255,.4)">kWh</div></div><div style="background:rgba(255,255,255,.08);border-radius:10px;padding:14px 10px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:4px;text-transform:uppercase">Por ano</div><div style="font-size:24px;font-weight:800;color:var(--green)">'+ano.toFixed(1)+'</div><div style="font-size:11px;color:rgba(255,255,255,.4)">kWh</div></div></div><div class="sc-result-rows"><div class="sc-result-row"><span>Potência do sistema</span><span>'+(kWp*1000).toFixed(0)+' Wp ('+qtd+'x '+potW+'Wp)</span></div><div class="sc-result-row"><span>HSP utilizado</span><span>'+hsp.toFixed(1)+' h/dia</span></div><div class="sc-result-row"><span>Rendimento</span><span>'+(rend*100).toFixed(0)+'%</span></div><div class="sc-result-row"><span>Geração diária</span><span>'+dia.toFixed(2)+' kWh/dia</span></div>'+(emM!==null?'<div class="sc-result-row" style="border-top:1px solid rgba(255,255,255,.1);padding-top:10px;margin-top:4px"><span>Economia mensal estimada</span><span style="color:var(--green);font-weight:800">'+fmt(emM)+'</span></div><div class="sc-result-row"><span>Economia anual estimada</span><span style="color:var(--green);font-weight:800">'+fmt(emA)+'</span></div>':'')+'</div><div class="sc-disclaimer">Fórmula: kWp × HSP × Rendimento × 30 dias. Valores estimados.</div>';
 }
+
+// ── TICKER FINANCEIRO ──
+(function(){
+  const ROTATE_MS=5000, FETCH_MS=3600000;
+  let items=[
+    {label:'Taxa Selic',value:'—',change:'',dir:'neu'},
+    {label:'Dólar',     value:'—',change:'',dir:'neu'},
+    {label:'Euro',      value:'—',change:'',dir:'neu'},
+    {label:'Bitcoin',   value:'—',change:'',dir:'neu'},
+    {label:'Ethereum',  value:'—',change:'',dir:'neu'},
+    {label:'Ouro',      value:'—',change:'',dir:'neu'},
+    {label:'Ibovespa',  value:'—',change:'',dir:'neu'},
+    {label:'Nasdaq',    value:'—',change:'',dir:'neu'},
+  ];
+  let idx=0,busy=false;
+  function icon(d){return d==='up'?'<i class="bi bi-caret-up-fill ticker-up"></i>':d==='down'?'<i class="bi bi-caret-down-fill ticker-down"></i>':'';}
+  function html(it){return '<span class="ticker-name">'+it.label+'</span><span class="ticker-value">'+it.value+(it.change?' <span class="ticker-change '+(it.dir==='up'?'ticker-up':it.dir==='down'?'ticker-down':'')+'">'+ it.change+'</span>':'')+' '+icon(it.dir)+'</span>';}
+  function rotate(){
+    if(busy)return;
+    const track=document.getElementById('tickerTrack');if(!track)return;
+    busy=true;const next=(idx+1)%items.length;
+    const cur=track.querySelector('.ticker-slide');
+    const inc=document.createElement('div');inc.className='ticker-slide ticker-entering';inc.innerHTML=html(items[next]);track.appendChild(inc);
+    if(cur){cur.classList.add('ticker-exiting');setTimeout(()=>cur.remove(),380);}
+    setTimeout(()=>{inc.classList.remove('ticker-entering');busy=false;idx=next;},420);
+  }
+  function set(label,value,change,dir){
+    const i=items.findIndex(x=>x.label===label);if(i<0)return;
+    items[i]={label,value,change,dir};
+    if(i===idx){const c=document.querySelector('#tickerTrack .ticker-slide:not(.ticker-exiting)');if(c)c.innerHTML=html(items[i]);}
+  }
+  function pp(v){return(v>=0?'+':'')+parseFloat(v).toFixed(2)+'%';}
+  function brl(v,dec=2){return parseFloat(v).toLocaleString('pt-BR',{minimumFractionDigits:dec,maximumFractionDigits:dec});}
+
+  async function fetchSelic(){
+    try{
+      const r=await fetch('https://brasilapi.com.br/api/taxas/v1');
+      const d=await r.json();
+      const s=d.find(t=>(t.tipo||t.nome||'').toUpperCase().includes('SELIC'));
+      if(s){const v=s.valor??s.percentual??s.value??'';set('Taxa Selic',String(v).replace('.',',')+' % a.a.','','neu');}
+    }catch(e){}
+  }
+
+  async function fetchCurrencies(){
+    try{
+      const r=await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL');
+      const d=await r.json();
+      const usd=d['USDBRL'],eur=d['EURBRL'];
+      if(usd){const p=parseFloat(usd.pctChange);set('Dólar','R$ '+brl(usd.bid),pp(p),p>=0?'up':'down');}
+      if(eur){const p=parseFloat(eur.pctChange);set('Euro','R$ '+brl(eur.bid),pp(p),p>=0?'up':'down');}
+    }catch(e){}
+  }
+
+  // Ouro via USD/oz × taxa de câmbio (evita problemas com XAU-BRL)
+  async function fetchOuro(){
+    try{
+      const r=await fetch('https://economia.awesomeapi.com.br/json/last/XAU-USD,USD-BRL');
+      const d=await r.json();
+      const xau=d['XAUUSD'],usd=d['USDBRL'];
+      if(xau&&usd){
+        const precoUSD=parseFloat(xau.bid);
+        const cambio=parseFloat(usd.bid);
+        if(!isNaN(precoUSD)&&!isNaN(cambio)&&precoUSD>0){
+          const precoBRL=precoUSD*cambio;
+          const p=parseFloat(xau.pctChange);
+          set('Ouro','R$ '+brl(precoBRL,0)+'/oz',pp(p),p>=0?'up':'down');
+        }
+      }
+    }catch(e){}
+  }
+
+  async function fetchCrypto(){
+    try{
+      const r=await fetch('https://economia.awesomeapi.com.br/json/last/BTC-BRL,ETH-BRL');
+      const d=await r.json();
+      const btc=d['BTCBRL'],eth=d['ETHBRL'];
+      if(btc){const p=parseFloat(btc.pctChange);set('Bitcoin','R$ '+brl(btc.bid,0),pp(p),p>=0?'up':'down');}
+      if(eth){const p=parseFloat(eth.pctChange);set('Ethereum','R$ '+brl(eth.bid,0),pp(p),p>=0?'up':'down');}
+    }catch(e){}
+  }
+
+  async function fetchStocks(){
+    const map={'^BVSP':'Ibovespa','^IXIC':'Nasdaq'};
+    await Promise.allSettled(Object.entries(map).map(async([sym,label])=>{
+      try{
+        const proxy='https://api.allorigins.win/get?url='+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+sym+'?interval=1d&range=1d');
+        const r=await fetch(proxy);const j=await r.json();
+        const meta=JSON.parse(j.contents)?.chart?.result?.[0]?.meta;if(!meta)return;
+        const price=meta.regularMarketPrice,prev=meta.chartPreviousClose||meta.previousClose||price;
+        const p=((price-prev)/prev)*100;
+        const val=sym==='^BVSP'?brl(price,0)+' pts':price.toLocaleString('en-US',{maximumFractionDigits:2});
+        set(label,val,pp(p),p>=0?'up':'down');
+      }catch(e){}
+    }));
+  }
+
+  async function fetchAll(){await Promise.allSettled([fetchSelic(),fetchCurrencies(),fetchOuro(),fetchCrypto(),fetchStocks()]);}
+
+  function init(){
+    const track=document.getElementById('tickerTrack');if(!track)return;
+    track.innerHTML='<div class="ticker-slide">'+html(items[0])+'</div>';
+    fetchAll();setInterval(rotate,ROTATE_MS);setInterval(fetchAll,FETCH_MS);
+  }
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+})();
 
 // ── SEARCH FILTER ──
 (function(){

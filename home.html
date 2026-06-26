@@ -13,7 +13,17 @@
 <!-- HEADER -->
 <header>
   <div class="header-inner">
-    <a class="logo" href="#"><div class="logo-icon"><img src="css/icons/logo-simuleja.svg" alt="logo Simulejá"></div><span class="logo-text">SimuleJá!</span></a>
+    <div class="logo-ticker-group">
+      <a class="logo" href="#"><div class="logo-icon"><img src="css/icons/logo-simuleja.svg" alt="logo Simulejá"></div><span class="logo-text">SimuleJá!</span></a>
+      <div class="ticker-divider"></div>
+      <div class="ticker-box" id="tickerBox">
+        <div class="ticker-window">
+          <div class="ticker-track" id="tickerTrack">
+            <div class="ticker-slide"><span class="ticker-name">Carregando</span><span class="ticker-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Desktop: barra de pesquisa normal -->
     <div class="search-bar" id="searchBarDesktop">

@@ -722,3 +722,20 @@ footer { background: #0d2233; color: #fff; padding: 48px 24px 32px; }
     width: 100%;
   }
 }
+/* ── TICKER FINANCEIRO ── */
+.logo-ticker-group{display:flex;align-items:center;gap:0;flex-shrink:0;}
+.ticker-divider{width:1px;height:32px;background:var(--gray-200);margin:0 14px;flex-shrink:0;}
+.ticker-box{flex-shrink:0;}
+.ticker-window{height:40px;overflow:hidden;position:relative;min-width:160px;}
+.ticker-track{position:relative;height:40px;}
+.ticker-slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:2px;}
+.ticker-name{font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:.5px;text-transform:uppercase;line-height:1;}
+.ticker-value{font-size:15px;font-weight:700;color:var(--gray-900);font-family:var(--ff);line-height:1.2;display:flex;align-items:center;gap:5px;}
+.ticker-change{font-size:12px;font-weight:600;}
+.ticker-up{color:#16a34a;}.ticker-down{color:#dc2626;}
+@keyframes tickerEnter{from{transform:translateY(-110%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes tickerExit{from{transform:translateY(0);opacity:1}to{transform:translateY(110%);opacity:0}}
+.ticker-entering{animation:tickerEnter .38s cubic-bezier(.32,.72,0,1) forwards;}
+.ticker-exiting{animation:tickerExit .35s cubic-bezier(.32,.72,0,1) forwards;}
+@media(max-width:700px){.ticker-divider{margin:0 10px;}.ticker-window{min-width:120px;}.ticker-value{font-size:13px;}}
+@media(max-width:480px){.ticker-divider,.ticker-box{display:none;}}
